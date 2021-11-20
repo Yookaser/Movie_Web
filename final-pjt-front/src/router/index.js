@@ -7,6 +7,9 @@ import Login from '../views/Login.vue'
 import MovieDetail from '../components/Home/MovieDetail.vue'
 import ActorList from '../components/Home/ActorList.vue'
 import ActorDetail from '../components/Home/ActorDetail.vue'
+import ReviewCreate from '../components/Home/ReviewCreate.vue'
+import ReviewList from '../components/Home/ReviewCreate.vue'
+import ReviewDetail from '../components/Home/ReviewDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -28,12 +31,12 @@ const routes = [
   {
     path:"/actor-list",
     name:"ActorList",
-    component: ActorList,
+    component: ActorList
   },
   {
     path: "/actor/:id",
-    name: "actor",
-    component: ActorDetail,
+    name: "ActorDetail",
+    component: ActorDetail
   },
   // 4. Account 기능
   {
@@ -46,12 +49,31 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  // 5. Review 기능
+  {
+    path: '/review-create/:category/:id',
+    name: 'ReviewCreate',
+    component: ReviewCreate
+  },
+  {
+    path: '/reviews-list/:category/:id',
+    name: 'ReviewList',
+    component: ReviewList
+  },
+  {
+    path: '/reviews-detail/:category/:category_id/:id',
+    name: 'ReviewDetail',
+    component: ReviewDetail
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior() { 
+    return { x: 0, y: 0 } 
+  },
 })
 
 export default router

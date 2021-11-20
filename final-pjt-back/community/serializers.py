@@ -1,46 +1,105 @@
 from rest_framework import serializers
-from .models import Review, Comment
+from django.contrib.auth import get_user_model
+from .models import MovieReview, ActorReview, MovieComment, ActorComment
 
 
-class ReviewListSerializer(serializers.ModelSerializer):
+class MovieReviewListSerializer(serializers.ModelSerializer):
 
+    def get_username(self, obj):
+        return obj.user.username
+      
+    username = serializers.SerializerMethodField("get_username", read_only=True)
+    
     class Meta:
-        model = Review
-        fields = ('pk', 'user', 'like_users', 'dislike_users', 'title', 'created_at', 'updated_at',)
+        model = MovieReview
+        fields = ('pk', 'user', 'movie', 'like_users', 'dislike_users', 'title', 'created_at', 'updated_at', 'username',)
+        
 
-
-class ReviewSerializer(serializers.ModelSerializer):
+class MovieReviewSerializer(serializers.ModelSerializer):
     
     class CommentSerailizer(serializers.ModelSerializer):
+
+        def get_username(self, obj):
+            return obj.user.username
+
+        commentusername = serializers.SerializerMethodField("get_username")
+
         class Meta:
-            model = Comment
-            fields = ('pk', 'user', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at',)
+            model = MovieComment
+            fields = ('pk', 'user', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at', 'commentusername',)
+
+    def get_username(self, obj):
+        return obj.user.username
     
     comments = CommentSerailizer(many=True, read_only=True)
     comment_count = serializers.IntegerField(source='comments.count', read_only=True)
+    reviewusername = serializers.SerializerMethodField("get_username")
 
     class Meta:
-        model = Review
-        fields = ('pk', 'user', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'category', 'comments', 'comment_count',)
+        model = MovieReview
+        fields = ('pk', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername',)
+        read_only_fields = ('like_users', 'dislike_users')
         
 
-class ReviewLikeUserserializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Review
-        fields = ('pk', 'like_users')
+class ActorReviewListSerializer(serializers.ModelSerializer):
     
+    def get_username(self, obj):
+        return obj.user.username
 
-class ReviewDislikeUserserializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Review
-        fields = ('pk', 'dislike_users')
-
-
-class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField("get_username")
     
     class Meta:
-        model = Comment
-        fields = ('pk', 'review', 'user', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at', 'category')
-        read_only_fields = ('review',)
+        model = ActorReview
+        fields = ('pk', 'user', 'actor', 'like_users', 'dislike_users', 'title', 'created_at', 'updated_at', 'username')
+        
+
+class ActorReviewSerializer(serializers.ModelSerializer):
+    
+    def get_username(self, obj):
+        return obj.user.username
+
+    class CommentSerailizer(serializers.ModelSerializer):
+
+        def get_username(self, obj):
+            return obj.user.username
+
+        commentusername = serializers.SerializerMethodField("get_username")
+
+        class Meta:
+            model = ActorComment
+            fields = ('pk', 'user', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at', 'commentusername')
+    
+    comments = CommentSerailizer(many=True, read_only=True)
+    comment_count = serializers.IntegerField(source='comments.count', read_only=True)
+    reviewusername = serializers.SerializerMethodField("get_username")
+
+    class Meta:
+        model = ActorReview
+        fields = ('pk', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername')
+        read_only_fields = ('like_users', 'dislike_users')
+
+
+class MovieCommentSerializer(serializers.ModelSerializer):
+    
+    def get_username(self, obj):
+        return obj.user.username
+
+    commentusername = serializers.SerializerMethodField("get_username")
+
+    class Meta:
+        model = MovieComment
+        fields = ('pk', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at', 'commentusername')
+        read_only_fields = ('like_users', 'dislike_users')
+
+
+class ActorCommentSerializer(serializers.ModelSerializer):
+    
+    def get_username(self, obj):
+        return obj.user.username
+
+    commentusername = serializers.SerializerMethodField("get_username")
+
+    class Meta:
+        model = ActorComment
+        fields = ('pk', 'like_users', 'dislike_users', 'content', 'created_at', 'updated_at', 'commentusername')
+        read_only_fields = ('like_users', 'dislike_users')

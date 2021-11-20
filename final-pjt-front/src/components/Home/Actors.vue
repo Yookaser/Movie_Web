@@ -1,20 +1,35 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">Actor</h2>
-    <v-container>
-      <v-row>
-        <v-col cols="12" sm="3" v-for="(actor, index) in actors" :key="index">
-          <v-hover v-slot="{hover}" open-delay="200">
-            <v-card :elevation="hover ? 16:2" :class="{'on-hover': hover}">
+     <div>
+      <h2 class="mt-2 grey--text">출연진</h2>
+      <div class="scroll">
+        <div
+            v-for="(actor, index) in actors"
+            :key="index"
+          >
+          <v-hover
+            v-slot="{hover}"
+            open-delay="200"
+          >
+            <v-card
+              :elevation="hover ? 16:4"
+              :class="{'on-hover': hover}"
+              width="200px"
+              class="pa-0 rounded-lg"
+            >
               <router-link :to="`/actor/${actor.id}`">
-                <v-img :src="actorProfileImage(actor)" />
+                <v-img 
+                  :src="actorProfileImage(actor)"
+                  alt="Actor Image"
+                  class="rounded-lg"
+                />
               </router-link>
               <v-card-title class="subtitle-2">{{ actor.name }}</v-card-title>
             </v-card>
           </v-hover>
-        </v-col>
-      </v-row>
-    </v-container>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,5 +53,14 @@ export default {
 </script>
 
 <style>
+.scroll {
+  overflow: auto;
+  white-space: nowrap;
+}
 
+div.scroll div {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
 </style>

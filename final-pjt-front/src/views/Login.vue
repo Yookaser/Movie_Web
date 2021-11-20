@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center" dense>
+        <v-row justify="center" align="center" dense>
           <v-col cols="12" sm="8" md="4" lg="4">
             <v-card elevation="0">
               <a href="https://edu-fedorae.netlify.app" name="Fedorae Education" title="Fedorae Education" target="_blank">

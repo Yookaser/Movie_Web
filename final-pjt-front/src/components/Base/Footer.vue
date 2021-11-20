@@ -19,10 +19,12 @@
       </v-card-text>
 
     </v-card>
+    <theme-toggle/>
   </v-footer>
 </template>
 
 <script>
+import ThemeToggle from "../UI/ThemeToggle.vue"
 export default {
   data: () =>({
     icons:[
@@ -31,7 +33,8 @@ export default {
       'mdi-linkedin',
       'mdi-instagram'
     ]
-  })
+  }),
+  components: { ThemeToggle }
 }
 </script>
 

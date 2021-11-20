@@ -4,8 +4,8 @@
 
       <v-icon class="mr-2">fas fa-video</v-icon>  <!-- 수정: 우리 로고 넣기 -->
       <v-toolbar-title>SSAFY-6</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
-      <v-btn text class="ml-2" to="/">Movies</v-btn>
-      <v-btn text class="ml-2" to="/actor-list">Actors</v-btn>
+      <v-btn text class="ml-2" to="/">영화</v-btn>
+      <v-btn text class="ml-2" to="/actor-list">배우</v-btn>
       <!-- <v-btn text class="ml-2" to="/">Profile</v-btn>
       <v-btn text class="ml-2" to="/">Contact</v-btn> -->
 

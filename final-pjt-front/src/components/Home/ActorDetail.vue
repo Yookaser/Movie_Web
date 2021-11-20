@@ -44,11 +44,16 @@
         <v-col cols="12" sm="8">
           <h1 class="grey--text text--darken-3 mt-5">{{actor.name}}</h1>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="3">
               <v-btn text>
                 <v-icon color="error">fas fa-birthday-cake</v-icon>
               </v-btn>
               <span class="grey--text">{{ actor.birthday }}  ({{ getAge(actor.birthday) }})</span>
+            </v-col>
+            <v-col cols="3">
+              <v-btn tile color="error" class="ml-2" @click="islogin($route.params.id)">
+                <v-icon left>fas fa-plus</v-icon>Create Review
+              </v-btn>
             </v-col>
           </v-row>
           <p class="mt-5 grey--text text-darken-3 subheader">{{actor.biography}}</p>
@@ -77,13 +82,21 @@
           as {{ cast.character }}
         </li>
       </ul>
+      <v-col cols="6">
+          <review-list :category="'actor'"></review-list>
+      </v-col>
     </v-container>
   </div>
 </template>
 
 <script>
+import ReviewList from '@/components/Home/ReviewList'
+
 export default {
-  data() {
+  components: {
+    ReviewList,
+  },
+  data () {
     return {
       socialDetails: [],
       actor: {},
@@ -91,7 +104,7 @@ export default {
       castMovies: {},
     }
   },
-  mounted() {
+  mounted () {
     this.fetchActor(this.$route.params.id)
     this.fetchCredits(this.$route.params.id)
     this.fetchSocial(this.$route.params.id)
@@ -109,7 +122,6 @@ export default {
       )
       this.castMovies = response.data.cast
       .filter((x) => x.release_date)
-      console.log(response.data.cast)
       this.knownFor = response.data.cast
       .filter((x) => x.media_type =="movie")
       .slice(1, 9)
@@ -136,7 +148,16 @@ export default {
       const month = new Date().getMonth() - birthday.getMonth()
       const date = new Date().getDate() - birthday.getDate()
       return month > 0 || (month === 0 && date > 0) ? year:year-1
-    }
+    },
+    islogin(actor_pk) {
+      const token = localStorage.getItem('jwt')
+      if(token) {
+        this.$router.push({ name: 'ReviewCreate', params: { category: 'actor', id: actor_pk }})
+      } else {
+        alert('리뷰를 쓰기 위해서는 로그인이 필요합니다.')
+        this.$router.push('/login')
+      }     
+    },
   }
 }
 </script>

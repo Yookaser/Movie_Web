@@ -2,22 +2,23 @@
   <div>
     <v-container>
       <v-row>
+
         <v-col cols="12" sm="4">
           <v-hover
             v-slot="{hover}"
             open-delay="200"
           >
-          <v-card
-            :elevation="hover ? 16:2"
-            :class="{'on-hover': hover}"
-          >
-            <!-- <router-link :to="`/movie/${movie.id}`">
-            </router-link> -->
-            
-            <v-img :src="posterPath" alt="poster" class=""/>
-          </v-card>
+            <v-card
+              :elevation="hover ? 16:2"
+              :class="{'on-hover': hover}"
+            >
+              <v-img
+                :src="posterPath"
+                alt="poster"/>
+            </v-card>
           </v-hover>
         </v-col>
+
         <v-col cols="12" sm="8">
           <h1 class="grey--text text-darken-3 mt-5">{{ this.movie.title }}</h1>
           <v-row>
@@ -38,38 +39,60 @@
               </span>
             </v-col>
             <v-col cols="12" sm="7">
-              <div class="subtitle-2 grey--text ml-n16">
-                <span v-for="(item, index) in movie.genres" :key="index" class="ml-1">
+              <div
+                class="subtitle-2grey--text ml-n16"
+              >
+                <span 
+                  v-for="(item, index) in movie.genres"
+                  :key="index"
+                  class="ml-1"
+                >
                   {{ item.name }}
                   <span v-if="(movie.genres.length - 1 != index)">,</span>
                 </span>
               </div>
             </v-col>
           </v-row>
+          
           <p class="mt-5 grey--text text--darken-3 subheader">{{ movie.overview }}</p>
           <div class="mt-5">
             <h2 class="mt-5 grey--text text--darken-3">Featured Actor</h2>
-            <div :key="index" v-for="(crew, index) in movie.credits.crew" class="mt-5 ml-5">
-              <div v-if="index < 2" class="">
+            <div 
+              :key="index" v-for="(crew, index) in movie.credits.crew"
+              class="mt-5 ml-5"
+            >
+              <div
+                v-if="index < 2"
+                class=""
+              >
                 <h3>{{ crew.name }}</h3>
                 <span class="grey--text">{{ crew.job }}</span>
               </div>
             </div>
           </div>
+          
           <v-dialog
             v-model="dialog"
             persistent
             width="60%"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn tile color="error" v-bind="attrs" v-on="on" @click.prevent="openYouTubeModel">
+              <v-btn
+                tile
+                color="error"
+                v-bind="attrs"
+                v-on="on"
+                @click.prevent="openYouTubeModel"
+              >
                 <v-icon left>mdi-play</v-icon>Play
               </v-btn>
             </template>
+
             <v-card>
               <v-card-title>
                 <span class="headline">{{ movie.title }}</span>
               </v-card-title>
+
               <v-card-text>
                 <v-container>
                   <v-row>
@@ -82,21 +105,31 @@
                   </v-row>
                 </v-container>
               </v-card-text>
+
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="error" text @click="dialog = false">Close</v-btn>
               </v-card-actions>
             </v-card>
+            
           </v-dialog>
           <v-btn tile color="error" class="ml-2">
             <v-icon left>mdi-heart</v-icon>Favorite
           </v-btn>
+          <v-btn tile color="error" class="ml-2" @click="islogin($route.params.id)">
+            <v-icon left>fas fa-plus</v-icon>Create Review
+          </v-btn>
         </v-col>
       </v-row>
+
       <v-divider class="mt-2"></v-divider>
       <Actors :actors="movie.credits.cast" />
       <v-divider class="mt-2"></v-divider>
       <Images :images="movie.images.backdrops" />
+      <v-divider class="mt-2"></v-divider>
+      <v-col cols="6">
+          <review-list :category="'movie'"></review-list>
+      </v-col>
     </v-container>
   </div>
 </template>
@@ -104,11 +137,13 @@
 <script>
 import Actors from '@/components/Home/Actors'
 import Images from '@/components/Home/Images'
+import ReviewList from '@/components/Home/ReviewList'
 
 export default {
   components: {
     Actors,
     Images,
+    ReviewList,
   },
   data() {
     return {
@@ -125,7 +160,7 @@ export default {
       dialog: false,
     }
   },
-  created() {
+  created: function () {
     this.fetchMovie(this.$route.params.id)
   },
   watch: {
@@ -162,7 +197,16 @@ export default {
       return (
         "https://www.youtube.com/embed/" + this.movie.videos.results[0].key
       )
-    }
+    },
+    islogin(movie_pk) {
+      const token = localStorage.getItem('jwt')
+      if(token) {
+        this.$router.push({ name: 'ReviewCreate', params: { category: 'movie', id: movie_pk }})
+      } else {
+        alert('리뷰를 쓰기 위해서는 로그인이 필요합니다.')
+        this.$router.push('/login')
+      }     
+    },
   }
 
 }

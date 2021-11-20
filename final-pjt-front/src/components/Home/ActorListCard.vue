@@ -1,16 +1,23 @@
 <template>
   <div>
-    <v-hover v-slot="{hover}" open-delay="200">
-      <v-card :elevation="hover ? 16 : 2" :class="{'on-hover': hover}">
+    <v-hover 
+      v-slot="{hover}"
+      open-delay="200"
+    >
+      <v-card
+        :elevation="hover ? 16 : 4"
+        :class="{'on-hover': hover}"
+        class="pa-0 rounded-lg"
+        width="235px"
+      >
         <router-link :to="`/actor/${actor.id}`">
-          <v-img :src="profileImage" alt="" />
+          <v-img
+            :src="profileImage"
+            alt="Actor Image"
+            class="pa-0 rounded-lg"
+          />
         </router-link>
         <v-card-title class="subtitle-2">{{ actor.name }}</v-card-title>
-        <!-- <v-card-text>
-          <p class="text-gray-400">
-              {{ knownFor }}
-          </p>
-        </v-card-text> -->
       </v-card>
     </v-hover>
   </div>

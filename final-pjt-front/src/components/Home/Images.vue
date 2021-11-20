@@ -1,17 +1,19 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">Images</h2>
-    <v-container>
-      <v-row>
-        <v-col cols="12" sm="3" v-for="(image, index) in images" :key="index">
-          <v-hover v-slot="{hover}" open-delay="200">
-            <v-card :elevation="hover ? 16:2" :class="{'on-hover': hover}">
-              <v-img :src="movieImage(image)" alt=""></v-img>
-            </v-card>
-          </v-hover>
-        </v-col>
-      </v-row>
-    </v-container>
+    <h2 class="mt-2 grey--text">배경</h2>
+    <div class="scroll">
+      <div
+        v-for="(image, index) in images"
+        :key="index"
+      >
+        <v-img 
+          width="500"
+          :src="movieImage(image)"
+          alt="Movie Background"
+        >
+        </v-img>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +27,7 @@ export default {
   methods: {
     movieImage(image) {
       if (image.file_path) {
-        return "https://image.tmdb.org/t/p/w300/" + image.file_path
+        return "https://image.tmdb.org/t/p/w500/" + image.file_path
       } else {
         return "https://via.placeholder.com/300x450"
       }
@@ -35,5 +37,15 @@ export default {
 </script>
 
 <style>
+.scroll {
+  overflow: auto;
+  white-space: nowrap;
+}
 
+div.scroll div {
+  display: inline-block;
+  text-align: center;
+  padding: 8px;
+  text-decoration: none;
+}
 </style>
