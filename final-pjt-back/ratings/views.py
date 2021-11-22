@@ -1,6 +1,9 @@
+import random
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
+from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from movies.models import Movie
@@ -44,48 +47,42 @@ def movie_rating_check(request, movie_pk, user_pk):
     return Response(serializer.data)
 
 
-import random
-
-
 @api_view(['POST'])
 def movie_recommend(request, user_pk):
     reviews = MovieRating.objects.filter(user=user_pk).order_by('-rank')
 
-    if len(reviews) > 10:
-        reviews = reviews[:10]
+    if len(reviews) > 5:
+        reviews = reviews[:5]
 
-    watched = set()
-    genres = {}
-    for review in reviews:
-        watched.add(review.movie.pk)
-        for genre in Movie.objects.values('genres').filter(pk=review.movie.pk):
-            key = genre['genres'] 
-            if key in genres:
-                genres[key] += 1
-            else:
-                genres[key] = 1
+        watched = set()
+        genres = {}
+        for review in reviews:
+            watched.add(review.movie.pk)
+            for genre in Movie.objects.values('genres').filter(pk=review.movie.pk):
+                key = genre['genres'] 
+                if key in genres:
+                    genres[key] += 1
+                else:
+                    genres[key] = 1
 
-    recommend = []
-    movies = Movie.objects.prefetch_related('genres').values().order_by('-vote_average')
-    for movie in movies:
-        if movie['vote_count'] < 100 or movie['id'] in watched:
-            continue
-        
-        select = Movie.objects.values('genres').filter(pk=movie['id'])
-        
-        for genre in select:
-            key = genre['genres']
-            if key in genres: break
-        else:
-            continue
+        recommend = []
+        movies = Movie.objects.prefetch_related('genres').values().order_by('-vote_average')
+        for movie in movies:
+            if movie['vote_count'] < 100 or movie['id'] in watched: continue
+            
+            select = Movie.objects.values('genres').filter(pk=movie['id'])
+ 
+            cnt = 0
+            for genre in select:
+                if genre['genres'] in genres:
+                    cnt += 1
+            
+            if cnt and cnt >= len(select) // 2:    
+                if (random.randrange(0, 4) < 3): continue
 
-        if (random.randrange(0, 4) < 3):
-            continue
+                recommend.append(movie)
+                if len(recommend) == 7:
+                    break
 
-        recommend.append(movie)
-        if len(recommend) == 5:
-            break
-
-    print(recommend)
-    serializer = MovieSerializer(recommend, many=True)
-    return Response(serializer.data)
+        serializer = MovieSerializer(recommend, many=True)
+        return Response(serializer.data)
