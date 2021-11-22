@@ -54,7 +54,9 @@
       <v-divider class="mt-2"></v-divider>
 
       <v-card-actions class="justify-center">
-        <v-btn class="mr-3" color="primary" elevation="5" >수정</v-btn>
+        <router-link :to="{ name: 'ReviewUpdate', params: { category: $route.params.category, category_id: $route.params.category_id, id: $route.params.id, review: review }}">
+          <v-btn class="mr-3" color="primary" elevation="5">수정</v-btn>
+        </router-link>
         <v-btn class="mr-3" color="primary" elevation="5" @click="deleteReview">삭제</v-btn>
       </v-card-actions>
 
@@ -109,6 +111,8 @@ export default {
   data: function () {
     return {
       review: {
+        title: '',
+        content: '',
         like_users: [],
         dislike_users: [],
       },
@@ -223,7 +227,7 @@ export default {
       const headers = this.setToken()
       
       axios({
-        url: `${SERVER_URL}/community/reviews/${this.$route.params.category}/${this.$route.params.id}`,
+        url: `${SERVER_URL}/community/reviews/${this.$route.params.category}/${this.$route.params.id}/`,
         method: 'delete',
         headers,
       })

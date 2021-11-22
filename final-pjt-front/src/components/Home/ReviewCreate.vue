@@ -15,7 +15,7 @@
             <v-card-text>
               <v-form>
                 <v-text-field v-model.trim="information.title" label="title" name="title" type="text" outlined></v-text-field>
-                <v-textarea height="300px" v-model.trim="information.content" label="content" name="content"  type="text" outlined @keypress.enter="createreview(information)"></v-textarea>
+                <v-textarea height="300px" v-model.trim="information.content" label="content" name="content"  type="text" outlined></v-textarea>
                 <div class="text-right">
                   <v-btn x-large color="primary" elevation="10" @click="createreview(information, $route.params.category, $route.params.id)">제출</v-btn>
                 </div>

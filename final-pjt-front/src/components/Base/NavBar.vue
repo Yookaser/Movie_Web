@@ -6,6 +6,8 @@
       <v-toolbar-title>SSAFY-6</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
       <v-btn text class="ml-2" to="/">영화</v-btn>
       <v-btn text class="ml-2" to="/actor-list">배우</v-btn>
+      <v-btn text class="ml-2" to="/community-home">커뮤니티</v-btn>
+      <v-btn text class="ml-2" to="/recommendation">추천</v-btn>
       <!-- <v-btn text class="ml-2" to="/">Profile</v-btn>
       <v-btn text class="ml-2" to="/">Contact</v-btn> -->
 

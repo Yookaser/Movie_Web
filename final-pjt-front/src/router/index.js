@@ -10,6 +10,12 @@ import ActorDetail from '../components/Home/ActorDetail.vue'
 import ReviewCreate from '../components/Home/ReviewCreate.vue'
 import ReviewList from '../components/Home/ReviewCreate.vue'
 import ReviewDetail from '../components/Home/ReviewDetail.vue'
+import ReviewUpdate from '../components/Home/ReviewUpdate.vue'
+
+import CommunityHome from '../components/Community/CommunityHome.vue'
+
+import Recommendation from '../components/Recommendation.vue'
+
 
 Vue.use(VueRouter)
 
@@ -65,6 +71,24 @@ const routes = [
     name: 'ReviewDetail',
     component: ReviewDetail
   },
+  {
+    path: '/reviews-update/:category/:category_id/:id',
+    name: 'ReviewUpdate',
+    component: ReviewUpdate,
+    props: true
+  },
+  // 6. Community 기능
+  {
+    path: '/community-home',
+    name: '/CommunityHome',
+    component: CommunityHome
+  },
+  // 7. Recommendation 기능
+  {
+    path: '/recommendation',
+    name: '/Recommendation',
+    component: Recommendation
+  }
 ]
 
 const router = new VueRouter({
