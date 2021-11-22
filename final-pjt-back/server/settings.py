@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'community',
+    'ratings',
 
     'rest_framework',
     'rest_framework_simplejwt',

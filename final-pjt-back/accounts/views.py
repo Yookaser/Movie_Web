@@ -29,7 +29,7 @@ def signup(request):
 def get_user_data(request):
     token = request.headers['Authorization'][7:]
     access_token = AccessToken(token)
-
+    
     data = {
                 'user_id': access_token['user_id'],
             }

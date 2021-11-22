@@ -7,12 +7,27 @@ from rest_framework.permissions import AllowAny
 from movies.models import Movie, Actor
 from django.contrib.auth import get_user_model
 from .models import MovieReview, ActorReview, MovieComment, ActorComment
-from .serializers import MovieReviewListSerializer, MovieReviewSerializer, ActorReviewListSerializer, ActorReviewSerializer, MovieCommentSerializer, ActorCommentSerializer
+from .serializers import (
+    MovieReviewListSerializer, 
+    MovieReviewSerializer, 
+    ActorReviewListSerializer, 
+    ActorReviewSerializer, 
+    MovieCommentSerializer, 
+    ActorCommentSerializer,
+    )
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def movie_review_read_all(request, movie_pk):
+def movie_review_read_all(request):
+    reviews = MovieReview.objects.all()
+    serializer = MovieReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_review_read(request, movie_pk):
     reviews = MovieReview.objects.filter(movie=movie_pk)
     serializer = MovieReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
@@ -39,14 +54,22 @@ def movie_review_read_update_delete(request, review_pk):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
-    else: 
+    else:
         review.delete()
         return Response({ 'id': review_pk }, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def actor_review_read_all(request, actor_pk):
+def actor_review_read_all(request):
+    reviews = ActorReview.objects.all()
+    serializer = ActorReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def actor_review_read(request, actor_pk):
     reviews = ActorReview.objects.filter(actor=actor_pk)
     serializer = ActorReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
@@ -78,35 +101,6 @@ def actor_review_read_update_delete(request, review_pk):
         return Response({ 'id': review_pk }, status=status.HTTP_204_NO_CONTENT)
 
 
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def review_detail_update_delete(request, review_pk):
-#     review = get_object_or_404(Review, pk=review_pk)
-#     if request.method == 'GET':
-#         serializer = ReviewSerializer(review)
-#         return Response(serializer.data)
-#     elif request.method == 'PUT':
-#         serializer = ReviewSerializer(instance=review, data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response(serializer.data)
-#     else:
-#         review.delete()
-#         return Response({ 'id': review_pk }, status=status.HTTP_204_NO_CONTENT)
-
-
-# @api_view(['PUT', 'DELETE'])
-# def comment_update_delete(request, comment_pk):
-#     comment = get_object_or_404(Comment, pk=comment_pk)
-#     if request.method == 'PUT':        
-#         serializer = CommentSerializer(instance=comment, data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response(serializer.data)
-#     else:
-#         comment.delete()
-#         return Response({ 'id': comment_pk }, status=status.HTTP_204_NO_CONTENT)
-
-
 @api_view(['POST'])
 def movie_create_comment(request, review_pk):
     review = get_object_or_404(MovieReview, pk=review_pk)
@@ -125,6 +119,32 @@ def actor_create_comment(request, review_pk):
     if serializer.is_valid(raise_exception=True): 
         serializer.save(user=request.user, review=review)   
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT', 'DELETE'])
+def movie_comment_update_delete(request, comment_pk):
+    comment = get_object_or_404(MovieComment, pk=comment_pk)
+    if request.method == 'PUT':
+        serializer = MovieCommentSerializer(instance=comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+    else:
+        comment.delete()
+        return Response({ 'id': comment_pk }, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PUT', 'DELETE'])
+def actor_comment_update_delete(request, comment_pk):
+    comment = get_object_or_404(ActorComment, pk=comment_pk)
+    if request.method == 'PUT':
+        serializer = ActorCommentSerializer(instance=comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+    else:
+        comment.delete()
+        return Response({ 'id': comment_pk },  status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
@@ -155,3 +175,19 @@ def like_dislike(request, category, review_pk, flag):
             }
         return JsonResponse(like_status)
     return HttpResponse(status=401)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_movie_review(request, user_pk):
+    reviews = MovieReview.objects.filter(user=user_pk)
+    serializer = MovieReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_actor_review(request, user_pk):
+    reviews = ActorReview.objects.filter(actor=user_pk)
+    serializer = ActorReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)

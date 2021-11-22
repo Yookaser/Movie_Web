@@ -5,7 +5,7 @@ from movies.models import Movie, Actor
 
 class MovieReview(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, related_name='reviews' ,on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movie_reviews')
     dislike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='dislike_movie_reviews')
     title = models.CharField(max_length=100)

@@ -37,9 +37,9 @@ class MovieReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MovieReview
-        fields = ('pk', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername',)
-        read_only_fields = ('like_users', 'dislike_users')
-        
+        fields = ('pk', 'user', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername',)
+        read_only_fields = ('user', 'like_users', 'dislike_users')
+
 
 class ActorReviewListSerializer(serializers.ModelSerializer):
     
@@ -47,10 +47,10 @@ class ActorReviewListSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     username = serializers.SerializerMethodField("get_username")
-    
+
     class Meta:
         model = ActorReview
-        fields = ('pk', 'user', 'actor', 'like_users', 'dislike_users', 'title', 'created_at', 'updated_at', 'username')
+        fields = ('pk', 'user', 'actor', 'like_users', 'dislike_users', 'title', 'created_at', 'updated_at', 'username',)
         
 
 class ActorReviewSerializer(serializers.ModelSerializer):
@@ -75,8 +75,8 @@ class ActorReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ActorReview
-        fields = ('pk', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername')
-        read_only_fields = ('like_users', 'dislike_users')
+        fields = ('pk', 'user', 'like_users', 'dislike_users', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'reviewusername')
+        read_only_fields = ('user', 'like_users', 'dislike_users')
 
 
 class MovieCommentSerializer(serializers.ModelSerializer):
