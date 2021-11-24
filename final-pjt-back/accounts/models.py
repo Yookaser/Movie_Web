@@ -13,3 +13,10 @@ class Userinfo(models.Model):
     nickname = models.TextField(max_length=30)
     birth_date = models.DateField()
     context = models.TextField()
+    # image = models.ImageField()
+
+
+class UserMovie(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True)

@@ -2,89 +2,85 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="3" offset-sm="1">
           <v-hover v-slot="{ hover }" open-delay="200">
             <v-card :elevation="hover ? 16 : 2" :class="{'on-hover' : hover}">
               <div v-if="actor.profile_path">
-                <v-img :src="'https://image.tmdb.org/t/p/w300/' + actor.profile_path" alt="" />
+                <v-img :src="'https://image.tmdb.org/t/p/w300/' + actor.profile_path" alt="Actor Image" class="image-fit" />
               </div>
               <div v-else>
-                <v-img src="http://via.placeholder.com/571x856" alt="" />
-              </div>              
+                <v-img src="http://via.placeholder.com/571x856" alt="No Image" />
+              </div>
+
               <v-card-text>
                 <v-row class="mx-0 d-flex justify-center">
-                  <v-btn class="mx-2" fab dark small color="error"
-                  :href="'https://facebook.com/' + socialDetails.facebook_id">
-                    <v-icon dark>
-                      fab fa-facebook-f
-                    </v-icon>
+                  <v-btn class="mx-4" fab dark small @click='gosocial("https://facebook.com/", socialDetails.facebook_id, actor.name, "페이스북")' :color="socialDetails.facebook_id ? '#4dd0e1' : '#B0BEC5'">
+                    <v-icon dark>fab fa-facebook-f</v-icon>
                   </v-btn>
-                  <v-btn class="mx-2" fab dark small color="error"
-                  :href="'https://instagram.com/' + socialDetails.instagram_id">
-                  <v-icon dark>
-                    fab fa-instagram
-                  </v-icon>
+                  <v-btn class="mx-4" fab dark small @click='gosocial("https://instagram.com/", socialDetails.instagram_id, actor.name, "인스타그램")' :color="socialDetails.instagram_id ? '#4dd0e1' : '#B0BEC5'">
+                    <v-icon dark>fab fa-instagram</v-icon>
                   </v-btn>
-                  <v-btn class="mx-2" fab dark small color="error"
-                  :href="'https://twitter.com/' + socialDetails.twitter_id">
-                  <v-icon dark>
-                    fab fa-twitter
-                  </v-icon>
-                  </v-btn>
-                  <v-btn class="mx-2" fab dark small color="error">
-                    <v-icon dark>
-                      fas fa-globe-asia
-                    </v-icon>
+                  <v-btn class="mx-4" fab dark small @click='gosocial("https://twitter.com/", socialDetails.twitter_id, actor.name, "트위터")' :color="socialDetails.twitter_id ? '#4dd0e1' : '#B0BEC5'">
+                    <v-icon dark>fab fa-twitter</v-icon>
                   </v-btn>
                 </v-row>
               </v-card-text>
             </v-card>
           </v-hover>
         </v-col>
-        <v-col cols="12" sm="8">
+
+        <v-col cols="12" sm="7">
           <h1 class="grey--text text--darken-3 mt-5">{{actor.name}}</h1>
           <v-row>
-            <v-col cols="3">
+            <v-col cols="12" sm="3">
               <v-btn text>
                 <v-icon color="error">fas fa-birthday-cake</v-icon>
               </v-btn>
               <span class="grey--text">{{ actor.birthday }}  ({{ getAge(actor.birthday) }})</span>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="12" sm="3">
               <v-btn tile color="error" class="ml-2" @click="islogin($route.params.id)">
-                <v-icon left>fas fa-plus</v-icon>Create Review
+                <v-icon left>fas fa-plus</v-icon>리뷰 쓰기
               </v-btn>
             </v-col>
           </v-row>
+
           <p class="mt-5 grey--text text-darken-3 subheader">{{actor.biography}}</p>
-          <h4 class="mt-1 grey--text">known For</h4>
-          <v-row>
-            <v-col cols="12" sm="3" :key="movie.id" v-for="movie in this.knownFor" class="mt-5">
+          <div class="scroll">
+            <v-col cols="12" sm="2" :key="movie.id" v-for="movie in this.knownFor" class="pa-0 mr-3">
               <v-hover v-slot="{ hover }" open-delay="200">
-                <v-card :elevation="hover ? 16 : 2" :class="{'on-hover' : hover}">
+                <v-card class="pa-0 rounded-lg" max-width="170px" :elevation="hover ? 16 : 4" :class="{'on-hover' : hover}">
                   <router-link :to="`/movie/${movie.id}`">
-                    <v-img :src="movieImage(movie)"/>
+                    <v-img max-height="241px" class="rounded-lg" alt="Movie Image" :src="movieImage(movie)"/>
                   </router-link>
+                    <v-card-title v-if="movie.title.length > 10" class="subtitle-2 rounded-lg">{{ movie.title.slice(0, 10) }}...</v-card-title>
+                    <v-card-title v-else class="subtitle-2 rounded-lg">{{ movie.title }}</v-card-title>
                 </v-card>
               </v-hover>
             </v-col>
-          </v-row>
+          </div>
         </v-col>
       </v-row>
-      <v-divider class="mt-2"></v-divider>
-      <h2 class="mt-2 grey--text">Credits</h2>
-      <ul class="pl-5 mt-8">
-        <li v-for="cast in castMovies" :key="cast.id">
-          <strong>{{ castDetails(cast) }}</strong>
-          <v-btn text :to="`/movie/${cast.id}`">
-            {{ cast.title }}
-          </v-btn>
-          as {{ cast.character }}
-        </li>
-      </ul>
-      <v-col cols="6">
+
+      <v-row>
+        <v-col cols="10" offset="1">
+          <v-divider class="my-6"></v-divider>
           <review-list :category="'actor'"></review-list>
-      </v-col>
+
+          <v-divider class="my-6"></v-divider>
+
+          <h2 class="mt-2 grey--text">크레딧</h2>
+          <ul class="pl-5 mt-8">
+            <li v-for="cast in castMovies" :key="cast.id">
+              <strong>{{ castDetails(cast) }}</strong>
+              <v-btn text :to="`/movie/${cast.id}`">
+                {{ cast.title }}
+              </v-btn>
+              as {{ cast.character }}
+            </li>
+          </ul>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -118,12 +114,16 @@ export default {
     },
     async fetchCredits(actorId) {
       const response = await this.$http.get(
-        "/person/" + actorId + "/combined_credits"
+        "/person/" + actorId + "/combined_credits" + "?language=ko"
       )
       this.castMovies = response.data.cast
       .filter((x) => x.release_date)
+      .sort(function (a, b){ return new Date(b.release_date) - new Date(a.release_date)})
+      
       this.knownFor = response.data.cast
       .filter((x) => x.media_type =="movie")
+      .filter((x) => x.poster_path)
+      .sort(function (a, b){ return new Date(b.vote_average) - new Date(a.vote_average)})
       .slice(1, 9)
     },
     async fetchSocial(actorId){
@@ -145,7 +145,7 @@ export default {
     getAge(birthday) {
       birthday = new Date(birthday)
       const year = new Date().getFullYear() - birthday.getFullYear()
-      const month = new Date().getMonth() - birthday.getMonth()
+      const month = new Date().getMonth() + 1 - birthday.getMonth()
       const date = new Date().getDate() - birthday.getDate()
       return month > 0 || (month === 0 && date > 0) ? year:year-1
     },
@@ -158,10 +158,33 @@ export default {
         this.$router.push('/login')
       }     
     },
+    gosocial: function(base_url, socail_url, actor, social) {
+      if (socail_url) {
+        window.open(base_url+socail_url, "_blank")
+      } else {
+        alert(`${actor}님의 ${social} 페이지가 존재하지 않습니다.`)
+      }
+    }
   }
 }
 </script>
 
 <style>
+.scroll {
+  overflow: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
 
+div.scroll img {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.image-fit {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

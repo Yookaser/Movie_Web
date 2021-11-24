@@ -3,7 +3,6 @@ import random
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
-from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from movies.models import Movie
@@ -16,7 +15,7 @@ from movies.serializers import MovieSerializer
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movie_rating_read(request, movie_pk):
-    reviews = MovieRating.objects.filter(movie=movie_pk)
+    reviews = MovieRating.objects.filter(movie=movie_pk).order_by('-pk')
     serializer = RatingSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -83,6 +82,5 @@ def movie_recommend(request, user_pk):
                 recommend.append(movie)
                 if len(recommend) == 7:
                     break
-
         serializer = MovieSerializer(recommend, many=True)
         return Response(serializer.data)

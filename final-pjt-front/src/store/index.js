@@ -5,9 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    LoadingStatus: false,
+
     isLoggedIn: false,
+    username: ''
   },
   mutations: {
+    startSpinner (state) {
+      state.LoadingStatus = true;
+    },
+    endSpinner (state) {
+        state.LoadingStatus = false;
+    },
+
     LOGIN: function (state) {
       state.isLoggedIn = true
     },
@@ -16,8 +26,8 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    Login: function ( { commit } ) {
-      commit('LOGIN')
+    Login: function ( { commit }, username ) {
+      commit('LOGIN', username)
     },
     Logout: function ( { commit } ) {
       commit('LOGOUT')

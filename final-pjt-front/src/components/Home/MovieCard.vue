@@ -3,9 +3,9 @@
   v-slot="{hover}"
   open-delay="200"
   >
-  <v-card :elevation="hover ? 16:2" :class="{'on-hover' : hover}">
+  <v-card :elevation="hover ? 16:2" :class="{'on-hover' : hover}" class="rounded-lg">
     <router-link :to="`/movie/${movie.id}`">
-    <v-img :src="posterPath" alt="" class=""></v-img>
+    <v-img :src="posterPath" alt="Movie Poster" max-height="680px" class="rounded-lg"></v-img>
     </router-link>
 
     <v-card-title class="h2 pb-1">{{ movie.title }}</v-card-title>

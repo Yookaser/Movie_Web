@@ -6,7 +6,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('pk', 'key', 'name',)
+        fields = ('id', 'key', 'name',)
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class ActorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Actor
-        fields = ('pk', 'name', 'gender', 'birth_date', 'birth_place', 'profile_path', 'movies', 'movie_count')
+        fields = ('id', 'name', 'gender', 'birth_date', 'birth_place', 'profile_path', 'movies', 'movie_count')
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class MovieSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Movie
-        fields = ('pk', 'title', 'overview', 'release_date', 'vote_average', 'vote_count', 'poster_path', 'genres', 'actors', 'genres_list', 'actors_list')
+        fields = ('id', 'title', 'overview', 'release_date', 'vote_average', 'vote_count', 'poster_path', 'genres', 'actors', 'genres_list', 'actors_list')
     
 
     def create(self, validated_data):

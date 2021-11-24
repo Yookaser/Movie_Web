@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">리뷰</h2>
+    <h2 class="mt-2 grey--text">영화 리뷰</h2>
     <v-card elevation="0">
       <v-card-title>
         <v-spacer></v-spacer>
@@ -18,10 +18,9 @@
         :items="desserts"
         item-key="pk"
         :search="search"
-        class="my-border"
       >
         <template v-slot:item="{ item }">
-          <tr @click="goDetail(item.pk)">
+          <tr @click="goDetail(item.movie, item.pk)">
             <td>{{ item.username }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.created_at }}</td>
@@ -35,15 +34,12 @@
   </div>
 </template>
 
-
 <script>
 import axios from 'axios'
+
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
-  props: {
-    category: String
-  },
 
   data: function () {
     return {
@@ -59,14 +55,37 @@ export default {
         { text: '추천', value: 'like_users.length' },
         { text: '비추천', value: 'dislike_users.length' },
       ],
-      desserts: []
+      desserts: [],
+      user_id: Number,
     }
   },
 
   methods: {
+    setToken: function () {
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
+    getUserId: function () {
+      const headers = this.setToken()
+      axios({
+        url: `${SERVER_URL}/accounts/getuserdata/`,
+        method: 'get',
+        headers,
+      })
+      .then((res) => {
+        this.user_id = res.data.user_id
+        this.receiveReviews()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     receiveReviews: function () {
       axios({
-        url: `${SERVER_URL}/community/reviews/${this.category}/list/${this.$route.params.id}/`,
+        url: `${SERVER_URL}/community/user/movie/reviews/${this.user_id}`,
         method: 'get'
       })
       .then((res) => {
@@ -76,22 +95,18 @@ export default {
         console.log(err)
       })
     },
-    goDetail: function (id) {
-      this.$router.push({ name: 'ReviewDetail', params: { category: this.category, category_id: this.$route.params.id ,id }})
+
+    goDetail: function (movie_id, review_id) {
+      this.$router.push({ name: 'ReviewDetail', params: { category: "movie", category_id: movie_id , id: review_id }})
     },
   },
 
   created: function () {
-    this.receiveReviews()
+    this.getUserId()
   }
 }
 </script>
 
 <style>
-  tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, .05);
-  }
-  .my-border {
-    border: 1px solid rgba(0, 0, 0, 0.37);
-  }
+
 </style>

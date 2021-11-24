@@ -1,101 +1,79 @@
 <template>
   <div class="detail-container">
-    <v-card class="mx-auto mt-10" width="65%" height="65%" elevation="0">
-      <v-card-title>제목: {{ review.title }}</v-card-title>
-      <v-card-subtitle class="mx-5 justify-space-around">
-        <v-card-text cols="4">작성자: {{ review.reviewusername }}</v-card-text>
-        <v-card-text cols="4">
-          작성 일시: {{ review.created_at }}
-          수정 일시: {{ review.updated_at }}
-        </v-card-text>
+    <v-card class="mx-auto mt-10 mb-10 p-5" width="65%" height="65%" elevation="0">
+      <v-card-title class="text-h5">제목: {{ review.title }}</v-card-title>
+      <v-card-subtitle class="justify-space-around grey--text font-weight-light">
+        <v-row>
+          <v-col cols="2">
+            <v-card-text class="text-h6" cols="4">작성자: {{ review.reviewusername }}</v-card-text>
+          </v-col>
+          <v-col cols="4">
+            <v-card-text class="text-h7" cols="4">작성 일시: {{ review.created_at }}</v-card-text>
+          </v-col>
+          <v-col cols="4">
+            <v-card-text class="text-h7" cols="4">수정 일시: {{ review.updated_at }}</v-card-text>
+          </v-col>
+        </v-row>
       </v-card-subtitle>
       <v-divider class="mt-2"></v-divider>
 
-      <v-card-text>
+      <v-card-text class="text-h5">
         {{ review.content }}
       </v-card-text>
     
       <v-card-actions class="justify-center">
-        <v-btn
-          v-if="review.like_users.find(el => el == user_id)"
-          class="mr-3"
-          color="primary"
-          elevation="5"
-          @click="isLike(1)"
-        >
-          좋아요취소
+        <v-btn v-if="review.like_users.find(el => el == user_id)" class="mr-3" color="primary" elevation="5" @click="isLike(1)">
+          <v-icon left small>fas fa-thumbs-up</v-icon>
+          <p class="my-auto">{{review.like_users.length}}</p>
         </v-btn>
-        <v-btn 
-          v-else
-          class="mr-3"
-          color="primary"
-          elevation="5"
-          @click="isLike(1)"
-        >
-          좋아요
+        <v-btn v-else class="mr-3" color="primary" elevation="5" @click="isLike(1)">
+          <v-icon left small>far fa-thumbs-up</v-icon>
+          <p class="my-auto">{{review.like_users.length}}</p>
         </v-btn>
-        <v-btn
-          v-if="review.dislike_users.find(el => el == user_id)"
-          color="error"
-          elevation="5"
-          @click="isLike(0)"
-        >
-          싫어요취소
+        <v-btn v-if="review.dislike_users.find(el => el == user_id)" color="error" elevation="5" @click="isLike(0)">
+          <v-icon left small>fas fa-thumbs-down</v-icon>
+          <p class="my-auto">{{review.dislike_users.length}}</p>
         </v-btn>
-        <v-btn
-          v-else
-          color="error"
-          elevation="5"
-          @click="isLike(0)"
-        >
-          싫어요
+        <v-btn v-else color="error" elevation="5" @click="isLike(0)">
+          <v-icon left small>far fa-thumbs-down</v-icon>
+          <p class="my-auto">{{review.dislike_users.length}}</p>
         </v-btn>
       </v-card-actions>
       <v-divider class="mt-2"></v-divider>
 
-      <v-card-actions class="justify-center">
-        <router-link :to="{ name: 'ReviewUpdate', params: { category: $route.params.category, category_id: $route.params.category_id, id: $route.params.id, review: review }}">
-          <v-btn class="mr-3" color="primary" elevation="5">수정</v-btn>
-        </router-link>
-        <v-btn class="mr-3" color="primary" elevation="5" @click="deleteReview">삭제</v-btn>
-      </v-card-actions>
+      <v-row>
+        <v-col cols="10">
+          <v-card-text class="text-h6">댓글 {{ review.comment_count }}개</v-card-text>
+        </v-col>
+        <v-col cols="2">
+          <v-card-actions outlined v-if="review.user === user_id" class="justify-center">
+            <router-link :to="{ name: 'ReviewUpdate', params: { category: $route.params.category, category_id: $route.params.category_id, id: $route.params.id, review: review }}">
+              <v-btn class="mr-2" color="primary" elevation="5">수정</v-btn>
+            </router-link>
+            <v-btn class="ml-2" color="error" elevation="5" @click="deleteReview">삭제</v-btn>
+          </v-card-actions>
+          <!-- <v-btn @click="back($route.params.category, $route.params.category_id)">목록</v-btn> -->
+        </v-col>
+      </v-row>
 
-      <v-card-text>
-        댓글 개수: {{ review.comment_count }}
-      </v-card-text>
+      
       <div v-if="review.comments">
-        <review-detail-comment
-          v-for="(comment, idx) in review.comments"
-          :comment="comment"
-          :key="idx"
-        >
-        </review-detail-comment>
+        <review-detail-comment v-for="(comment, idx) in review.comments" :key="idx" :comment="comment" :idx="idx" :user_id="user_id" @update-comment="updateComment" @delete-comment="deleteComment" class="list my-5"></review-detail-comment>
       </div>
       <div v-else>
         <p>댓글을 달아주세요!</p>
       </div>
       <v-form class="mt-5">
-        <v-text-field
-          v-model.trim="information.content"
-          label="Write your comment"
-          name="comment"
-          type="text"
-          outlined
-          class="mb-2"
-          @keypress.enter="createcomment(information)"
-        >
-        </v-text-field>
-        <div class="text-right mb-4">
-          <v-btn 
-            @click="createcomment(information)"
-            class="my-1"
-            x-large 
-            color="primary"
-            elevation="5"
-          >
-           제출 
-          </v-btn>
-        </div>
+        <v-row>
+          <v-col cols="11">
+            <v-text-field v-model.trim="information.content" label="Write your comment" name="comment" type="text" outlined class="mb-2"></v-text-field>
+          </v-col>
+          <v-col cols="1" class="pl-0">
+            <div class="text-right">
+              <v-btn @click="createcomment(information)" class="my-1" x-large color="primary" elevation="5">제출</v-btn>
+            </div>
+          </v-col>
+        </v-row>
       </v-form>  
     </v-card>
   </div>
@@ -150,12 +128,15 @@ export default {
       .then((res) => {
         this.user_id = res.data.user_id
       })
+      .catch((err) => {
+        console.log(err)
+      })
     },
 
     isLike: function (flag) {
       const headers = this.setToken()
       if (headers['Authorization'] === "Bearer null") {
-        alert('좋아요와 싫어요를 이용하기 위해서는 로그인이 필요합니다.')
+        alert('로그인이 필요한 기능입니다.')
         return this.$router.push('/login')
       }
       axios({
@@ -201,7 +182,7 @@ export default {
       const headers = this.setToken()
 
       if (headers['Authorization'] === "Bearer null") {
-        alert('댓글을 쓰기 위해서는 로그인이 필요합니다.')
+        alert('로그인이 필요한 기능입니다.')
         return this.$router.push('/login')
       }
       if (!information.content) {
@@ -221,6 +202,14 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+    },
+
+    updateComment: function (comment_idx, comment_content) {
+      this.review.comments[comment_idx].content = comment_content
+    },
+
+    deleteComment: function (comment_idx) {
+      this.review.comments.splice(comment_idx, 1)
     },
 
     deleteReview: function () {
@@ -243,6 +232,14 @@ export default {
         console.log(err)
       })
     },
+
+    // back: function (category, id) {
+    //   if (category == 'actor') {
+    //     this.$router.push({ name: 'ActorDetail', params: { id }})
+    //   } else {
+    //     this.$router.push({ name: 'MovieDetail', params: { id }})
+    //   }
+    // }
   },
 
   created: function () {

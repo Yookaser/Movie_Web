@@ -13,9 +13,14 @@ import ReviewDetail from '../components/Home/ReviewDetail.vue'
 import ReviewUpdate from '../components/Home/ReviewUpdate.vue'
 
 import CommunityHome from '../components/Community/CommunityHome.vue'
+import ActorReviewTab from '../components/Community/ActorReviewTab.vue'
+import MovieReviewTab from '../components/Community/MovieReviewTab.vue'
 
-import Recommendation from '../components/Recommendation.vue'
+import Recommendation from '../components/Recommendation/Recommendation.vue'
 
+import Profile from '../components/Profile/Profile.vue'
+
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -33,12 +38,12 @@ const routes = [
     name: "MovieDetail",
     component: MovieDetail
   },
-  // 3. Actor Detail
   {
     path:"/actor-list",
     name:"ActorList",
     component: ActorList
   },
+  // 3. Actor Detail
   {
     path: "/actor/:id",
     name: "ActorDetail",
@@ -79,16 +84,31 @@ const routes = [
   },
   // 6. Community 기능
   {
-    path: '/community-home',
-    name: '/CommunityHome',
-    component: CommunityHome
+    path: "/community-home",
+    component: CommunityHome,
+    children: [
+      {
+        path: "1",
+        component: MovieReviewTab
+      },
+      {
+        path: "2",
+        component: ActorReviewTab
+      }
+    ]
   },
   // 7. Recommendation 기능
   {
     path: '/recommendation',
-    name: '/Recommendation',
+    name: 'Recommendation',
     component: Recommendation
-  }
+  },
+  // 8. profile 기능
+  {
+    path: '/profile/:username',
+    name: 'Profile',
+    component: Profile
+  },
 ]
 
 const router = new VueRouter({
@@ -98,6 +118,17 @@ const router = new VueRouter({
   scrollBehavior() { 
     return { x: 0, y: 0 } 
   },
+})
+
+router.beforeEach((to, from, next) => {
+  store.commit('startSpinner');
+  setTimeout(() => {
+      next();
+  }, 1);
+})
+
+router.afterEach(() => {
+  store.commit('endSpinner');
 })
 
 export default router

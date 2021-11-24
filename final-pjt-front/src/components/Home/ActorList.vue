@@ -66,8 +66,7 @@ export default {
           "/person/popular?page=" + page
         )
         this.actorList = response.data.results
-        
-      }catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
@@ -79,17 +78,6 @@ export default {
     next() {
       return this.fetchActorList(this.currentPage += 1)
     },
-    // scroll() {
-    //   window.onscroll = () => {
-    //     let bottomOfWindow = 
-    //     document.documentElement.scrollTop + window.innerHeight === 
-    //     document.documentElement.offsetHeight
-    //     if(bottomOfWindow){
-    //       currentPage +=1
-    //       this.fetchActorList((currentPage +=1))
-    //     }
-    //   }
-    // },
   }
 
 }

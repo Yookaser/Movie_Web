@@ -2,19 +2,18 @@
   <nav>
     <v-app-bar app color="primary" dark>
 
-      <v-icon class="mr-2">fas fa-video</v-icon>  <!-- 수정: 우리 로고 넣기 -->
-      <v-toolbar-title>SSAFY-6</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
+      <v-icon class="mr-2">fab fa-waze</v-icon>  <!-- 수정: 우리 로고 넣기 -->
+      <v-toolbar-title>WIIW</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
       <v-btn text class="ml-2" to="/">영화</v-btn>
       <v-btn text class="ml-2" to="/actor-list">배우</v-btn>
-      <v-btn text class="ml-2" to="/community-home">커뮤니티</v-btn>
+      <v-btn text class="ml-2" to="/community-home/1">커뮤니티</v-btn>
       <v-btn text class="ml-2" to="/recommendation">추천</v-btn>
-      <!-- <v-btn text class="ml-2" to="/">Profile</v-btn>
-      <v-btn text class="ml-2" to="/">Contact</v-btn> -->
-
+      <theme-toggle class="ml-2" />
       <v-spacer></v-spacer>
-      <div>
+      <v-spacer></v-spacer>
+      <div class="mr-6">
         <v-autocomplete
-        class="mt-4"
+        class="mt-5"
         clearable
         hide-no-data
         hide-selected
@@ -32,23 +31,20 @@
           </template>
         </v-autocomplete>
       </div>
-
       <div v-if="!isLoggedIn">
         <v-btn text class="ml-2" :to="{ name: 'Signup' }">Signup</v-btn>
         <v-btn text class="ml-2" :to="{ name: 'Login' }">Login</v-btn>
       </div>
 
       <div v-else>
-        <v-btn icon>
-          <v-badge color="green" content="2" overlap>  <!-- 수정: content 수정? -->
-            <v-icon>far fa-bell</v-icon>
+
+        <router-link :to="`/profile/${username}`">
+          <v-badge>
+            <v-avatar size="50">
+              <v-img src="https://images.dog.ceo/breeds/pitbull/IMG_20190826_121528_876.jpg"></v-img>  <!-- 수정: 유저의 프로필 이미지 넣기 -->
+            </v-avatar>
           </v-badge>
-        </v-btn>
-        <v-badge bordered bottom color="green" dot offset-x="10" offset-y="10">
-          <v-avatar size="40">
-            <v-img src="https://images.dog.ceo/breeds/pitbull/IMG_20190826_121528_876.jpg"></v-img>  <!-- 수정: 유저의 프로필 이미지 넣기 -->
-          </v-avatar>
-        </v-badge>
+        </router-link>
         <v-btn text @click="logout" class="ml-2" to="#">Logout</v-btn>
       </div>
 
@@ -57,6 +53,7 @@
 </template>
 
 <script>
+import ThemeToggle from "../UI/ThemeToggle.vue"
 import { mapState } from 'vuex'
 
 export default {
@@ -64,8 +61,9 @@ export default {
     drawer: null,
     model: '',
     search: null,
-    movies: []
+    movies: [],
   }),
+  components: { ThemeToggle },
   mounted() {
     this.loadMovies()
   },
@@ -84,12 +82,15 @@ export default {
       }
     }
   },
+  
   computed: {
     ...mapState([
       'isLoggedIn',
-    ])
+      'username',
+    ]),
   }
 }
+
 </script>
 
 <style>

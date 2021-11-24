@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">리뷰</h2>
+    <h2 class="mt-2 grey--text">평점</h2>
     <v-card elevation="0">
       <v-card-title>
         <v-spacer></v-spacer>
@@ -23,10 +23,9 @@
         <template v-slot:item="{ item }">
           <tr @click="goDetail(item.pk)">
             <td>{{ item.username }}</td>
-            <td>{{ item.title }}</td>
+            <td>{{ item.rank }}</td>
+            <td>{{ item.content }}</td>
             <td>{{ item.created_at }}</td>
-            <td>{{ item.like_users.length }}</td>
-            <td>{{ item.dislike_users.length }}</td>
           </tr>
         </template>
 
@@ -54,19 +53,18 @@ export default {
           text: '작성자',
           value: 'username',
         },
-        { text: '제목', value: 'title' },
+        { text: '평점', value: 'rank' },
+        { text: '내용', value: 'content' },
         { text: '작성일', value: 'created_at' },
-        { text: '추천', value: 'like_users.length' },
-        { text: '비추천', value: 'dislike_users.length' },
       ],
       desserts: []
     }
   },
 
   methods: {
-    receiveReviews: function () {
+    receiveRatings: function () {
       axios({
-        url: `${SERVER_URL}/community/reviews/${this.category}/list/${this.$route.params.id}/`,
+        url: `${SERVER_URL}/ratings/${this.category}/${this.$route.params.id}/`,
         method: 'get'
       })
       .then((res) => {
@@ -76,13 +74,24 @@ export default {
         console.log(err)
       })
     },
-    goDetail: function (id) {
-      this.$router.push({ name: 'ReviewDetail', params: { category: this.category, category_id: this.$route.params.id ,id }})
+
+    modifyRating: function(information, flag) {
+      if (!flag) {
+        for (let i = 0; i < this.desserts.length; i++) {
+          if (this.desserts[i].pk === information.pk) {
+            this.desserts[i].rank = information.rank
+            this.desserts[i].content = information.content
+            break
+          }
+        }
+      } else {
+        this.desserts.unshift(information)
+      }
     },
   },
 
   created: function () {
-    this.receiveReviews()
+    this.receiveRatings()
   }
 }
 </script>

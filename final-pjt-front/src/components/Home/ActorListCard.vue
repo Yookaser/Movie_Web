@@ -38,13 +38,6 @@ export default {
         return "http://via.placeholder.com/235x235"
       }
     },
-    // KnownFor(){
-    //   let KnownStr = ""
-    //   for (let i; i < this.actor.known_for.length - 1; i++) {
-    //     KnownStr += this.actor.known_for[i].title
-    //   }
-    //   return KnownStr
-    // }
   }
 }
 </script>

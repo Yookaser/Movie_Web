@@ -1,3 +1,4 @@
-// function saveToLocalStorage(key, value) {
-//   localStorage.setItem(key, value);
-// }
+export function saveToLocalStorage(key, value) {
+  localStorage.setItem(key, value);
+}
+

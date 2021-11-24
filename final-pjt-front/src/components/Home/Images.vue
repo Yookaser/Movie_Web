@@ -2,16 +2,8 @@
   <div>
     <h2 class="mt-2 grey--text">배경</h2>
     <div class="scroll">
-      <div
-        v-for="(image, index) in images"
-        :key="index"
-      >
-        <v-img 
-          width="500"
-          :src="movieImage(image)"
-          alt="Movie Background"
-        >
-        </v-img>
+      <div v-for="(image, index) in images.backdrops" :key="index">
+        <v-img loading="lazy" width="500" :src="movieImage(image)" alt="Movie Background"/>
       </div>
     </div>
   </div>
@@ -24,6 +16,7 @@ export default {
       required: true,
     }
   },
+
   methods: {
     movieImage(image) {
       if (image.file_path) {
@@ -32,7 +25,7 @@ export default {
         return "https://via.placeholder.com/300x450"
       }
     }
-  }
+  },
 }
 </script>
 

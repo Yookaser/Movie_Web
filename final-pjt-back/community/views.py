@@ -19,7 +19,7 @@ from .serializers import (
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movie_review_read_all(request):
-    reviews = MovieReview.objects.all()
+    reviews = MovieReview.objects.order_by('-pk')
     serializer = MovieReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -27,7 +27,7 @@ def movie_review_read_all(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movie_review_read(request, movie_pk):
-    reviews = MovieReview.objects.filter(movie=movie_pk)
+    reviews = MovieReview.objects.filter(movie=movie_pk).order_by('-pk')
     serializer = MovieReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -61,7 +61,7 @@ def movie_review_read_update_delete(request, review_pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def actor_review_read_all(request):
-    reviews = ActorReview.objects.all()
+    reviews = ActorReview.objects.order_by('-pk')
     serializer = ActorReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -69,7 +69,7 @@ def actor_review_read_all(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def actor_review_read(request, actor_pk):
-    reviews = ActorReview.objects.filter(actor=actor_pk)
+    reviews = ActorReview.objects.filter(actor=actor_pk).order_by('-pk')
     serializer = ActorReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -179,7 +179,7 @@ def like_dislike(request, category, review_pk, flag):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def user_movie_review(request, user_pk):
-    reviews = MovieReview.objects.filter(user=user_pk)
+    reviews = MovieReview.objects.filter(user=user_pk).order_by('-pk')
     serializer = MovieReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -187,6 +187,6 @@ def user_movie_review(request, user_pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def user_actor_review(request, user_pk):
-    reviews = ActorReview.objects.filter(actor=user_pk)
+    reviews = ActorReview.objects.filter(user=user_pk).order_by('-pk')
     serializer = ActorReviewListSerializer(reviews, many=True)
     return Response(serializer.data)

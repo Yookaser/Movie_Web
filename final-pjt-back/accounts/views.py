@@ -4,9 +4,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import AccessToken
-from django.http import JsonResponse
-from .models import Userinfo
-from .serializers import UserSerializer, UserAdditionalSerializer
+from django.http import JsonResponse, HttpResponse
+from .models import Userinfo, UserMovie
+from movies.models import Movie
+from .serializers import UserSerializer, UserAdditionalSerializer, UserMovieserializer
 
 
 @api_view(['POST'])
@@ -57,3 +58,26 @@ def user_additional(request):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+def user_movies(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            movies = UserMovie.objects.filter(user=request.user)
+            serializer = UserMovieserializer(movies, many=True)
+            return Response(serializer.data)
+        else:
+            movie_pk = request.data['movie_pk']
+            movie = Movie.objects.get(pk=movie_pk)
+            if UserMovie.objects.filter(user=request.user).filter(movie=movie).exists():
+                UserMovie.objects.filter(user=request.user).filter(movie=movie).delete()
+                liked = False
+            else:
+                UserMovie.objects.create(user=request.user, movie=movie)
+                liked = True
+            status = {
+                'liked': liked,
+            }
+        return JsonResponse(status)
+    return HttpResponse(status=401)
