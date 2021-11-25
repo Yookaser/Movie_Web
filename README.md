@@ -42,29 +42,31 @@
 
 <h4 style="text-align: center">로그인 및 회원가입</h4>
 
-<video src="README.assets/로그인&amp;회원가입.mp4"></video>
+![로그인&회원가입](README.assets/로그인&회원가입.gif)
+
+
 
 <h4 style="text-align: center">인기 영화 및 영화 디테일</h4>
 
-<video src="README.assets/영화.mp4"></video>
+![영화](README.assets/영화.gif)
 
 
 
 <h4 style="text-align: center">인기 배우 및 배우 디테일</h4>
 
-<video src="README.assets/배우.mp4"></video>
+![배우](README.assets/배우.gif)
 
 
 
 <h4 style="text-align: center">추천 페이지</h4>
 
-<video src="README.assets/추천.mp4"></video>
+![추천](README.assets/추천.gif)
 
 
 
 <h4 style="text-align: center">마이페이지</h4>
 
-<video src="README.assets/마이페이지.mp4"></video>
+![마이페이지](README.assets/마이페이지.gif)
 
 
 
