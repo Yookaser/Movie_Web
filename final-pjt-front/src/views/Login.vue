@@ -8,7 +8,7 @@
           </v-col>
           <v-col cols="12" sm="5" class="ml-12">
             <v-card elevation="0" class="transparent">
-              <h1 class="mb-15">WIIW</h1>
+              <h1 class="mb-15">WIW</h1>
               <v-row justify="center">
                 <v-col cols="12" sm="9">
                   <v-card-text>

@@ -3,7 +3,7 @@
     <v-app-bar app color="primary" dark>
 
       <v-icon class="mr-2">fab fa-waze</v-icon>  <!-- 수정: 우리 로고 넣기 -->
-      <v-toolbar-title class="font">WIIW</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
+      <v-toolbar-title class="font">WIW</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
       <v-btn text class="ml-2 font" to="/">영화</v-btn>
       <v-btn text class="ml-2 font" to="/actor-list">배우</v-btn>
       <v-btn text class="ml-2 font" to="/community-home/1">커뮤니티</v-btn>
