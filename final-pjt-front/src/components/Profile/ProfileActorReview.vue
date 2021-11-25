@@ -18,12 +18,13 @@
         :items="desserts"
         item-key="pk"
         :search="search"
+        class="my-border font grey--text"
       >
         <template v-slot:item="{ item }">
           <tr @click="goDetail(item.actor, item.pk)">
             <td>{{ item.username }}</td>
             <td>{{ item.title }}</td>
-            <td>{{ item.created_at }}</td>
+            <td>{{ item.created_at.slice(0,10) }} {{ item.created_at.slice(11,19) }}</td>
             <td>{{ item.like_users.length }}</td>
             <td>{{ item.dislike_users.length }}</td>
           </tr>

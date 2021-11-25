@@ -12,7 +12,7 @@ class Userinfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.TextField(max_length=30)
     birth_date = models.DateField()
-    context = models.TextField()
+    context = models.TextField(max_length=150)
     # image = models.ImageField()
 
 

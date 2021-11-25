@@ -15,12 +15,12 @@
                     <v-form>
                       <v-text-field dark v-model.trim="credentials.username" label="아이디를 입력해주세요" name="username" prepend-inner-icon="mdi-account" type="text" class="rounded-0" outlined></v-text-field>
                       <v-text-field dark v-model.trim="credentials.password" label="패스워드를 입력해주세요" name="password" prepend-inner-icon="mdi-lock" type="password" class="rounded-0" outlined @keypress.enter="login(credentials)"></v-text-field>
-                      <v-btn @click="login(credentials)" class="rounded-0 font-weight-bold" color="primary" x-large block dark>로그인</v-btn>
+                      <v-btn @click="login(credentials)" class="rounded-0 font-weight-bold font" color="primary" x-large block dark>로그인</v-btn>
                       <v-card-actions class="text--secondary">
                         <!-- <v-checkbox color="#000000" label="Remember me"></v-checkbox> -->
                         <v-spacer></v-spacer>
-                        <h6 class="mt-2 white--text">아이디가 없으신가요?</h6>
-                        <router-link class="pl-2" style="color: #FFFFFF" :to="{ name: 'Signup' }">회원가입</router-link> 
+                        <h6 class="mt-2 white--text font">아이디가 없으신가요?</h6>
+                        <router-link class="pl-2 font" style="color: #FFFFFF" :to="{ name: 'Signup' }">회원가입</router-link> 
                       </v-card-actions>
                     </v-form>
                   </v-card-text>
@@ -64,7 +64,7 @@ export default {
       })
       .then((res) => {
         localStorage.setItem('jwt', res.data.access)
-        this.$store.dispatch('Login')
+        this.$store.dispatch('Login', this.credentials.username)
         this.$router.push({ name: 'Home'})
       })
       .catch((err) => {

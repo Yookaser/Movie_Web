@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">배경</h2>
+    <h2 class="mt-2 grey--text font">배경</h2>
     <div class="scroll">
       <div v-for="(image, index) in images.backdrops" :key="index">
         <v-img loading="lazy" width="500" :src="movieImage(image)" alt="Movie Background"/>

@@ -5,13 +5,13 @@
         <v-row justify="space-between">
           <v-col cols="1"></v-col>
           <v-col cols="3" class="px-0">
-            <v-btn color="error" @click="select(0)">찜한 영화</v-btn>
+            <v-btn color="error" class="font" @click="select(0)">찜한 영화</v-btn>
           </v-col>
           <v-col cols="3" class="px-0">
-            <v-btn color="error" @click="select(1)">영화 리뷰</v-btn>
+            <v-btn color="error" class="font" @click="select(1)">영화 리뷰</v-btn>
           </v-col>
           <v-col cols="3" class="px-0">
-            <v-btn color="error" @click="select(2)">배우 리뷰</v-btn>
+            <v-btn color="error" class="font" @click="select(2)">배우 리뷰</v-btn>
           </v-col>
           <v-col cols="1"></v-col>
         </v-row>

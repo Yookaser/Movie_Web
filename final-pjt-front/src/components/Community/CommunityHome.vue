@@ -12,6 +12,7 @@
         v-for="tab in tabs" 
         :key="tab.id" 
         :to="tab.route"
+        class="font"
       >
         {{ tab.name }}
       </v-tab>
@@ -34,3 +35,4 @@ export default {
   }
 };
 </script>
+

@@ -1,6 +1,6 @@
 <template>
   <div class="mx-3">
-    <h2 class="mt-2 grey--text">인기 배우</h2>
+    <h2 class="mt-2 grey--text font">인기 배우</h2>
 
     <v-container fluid>
       <v-row>

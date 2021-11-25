@@ -1,7 +1,7 @@
 import requests, json
 
 
-class TmdbAPI:
+class Initial_DB:
     base_url = 'https://api.themoviedb.org/3'
     poster_url = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 
@@ -62,12 +62,12 @@ class TmdbAPI:
         return actor_list
 
 
-    def get_data(self):
+    def get_data(self, n):
         movies = []
         actors = []
         actor_vst = set()
-        for page in range(1, 101):
-            url = self.get_url('movie', 'popular', region='KR', language='ko', page=page)
+        for page in range(1, n):
+            url = self.get_url('movie', 'popular', language='ko', page=page)
             response = requests.get(url)
             datas = response.json()
 
@@ -85,10 +85,9 @@ class TmdbAPI:
                 movie['fields']['vote_count'] = data['vote_count']
                 movie['fields']['poster_path'] = data['poster_path']
                 movies.append(movie)
-            print(f'현재 페이지={page} || 진행률={page}%')
+            print(f'현재 페이지={page} || 진행률={page*100//(n-1)}%')
 
         genres = self.get_genre()
-        print(genres)
         with open('./final-pjt-back/movies/fixtures/genres.json', 'w', encoding="utf-8") as make_file:
             json.dump(genres, make_file, ensure_ascii=False, indent="\t")
         with open('./final-pjt-back/movies/fixtures/actors.json', 'w', encoding="utf-8") as make_file:
@@ -98,8 +97,8 @@ class TmdbAPI:
         return 'Finish'
 
 
-helper = TmdbAPI('233360b926375559342a878b1b52e833')
-helper.get_data()
+helper = Initial_DB('233360b926375559342a878b1b52e833')
+helper.get_data(101)
 
 # from server.settings import env
 # helper = TmdbAPI(env('TMDB_KEY'))

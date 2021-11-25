@@ -16,11 +16,11 @@
                       <v-text-field dark v-model.trim="credentials.username" label="아이디를 입력해주세요" name="username" prepend-inner-icon="mdi-account" type="text" class="rounded-0" outlined></v-text-field>
                       <v-text-field dark v-model.trim="credentials.password" label="패스워드를 입력해주세요" name="password" prepend-inner-icon="mdi-lock" type="password" class="rounded-0" outlined></v-text-field>
                       <v-text-field dark v-model.trim="credentials.passwordConfirmation" label="패스워드를 다시 입력해주세요" name="passwordConfirmation" prepend-inner-icon="mdi-lock-outline" type="password" class="rounded-0" outlined @keypress.enter="signup(credentials)"></v-text-field>
-                      <v-btn @click="signup(credentials)" class="rounded-0 font-weight-bold" color="primary" x-large block dark>회원가입</v-btn>
+                      <v-btn @click="signup(credentials)" class="rounded-0 font-weight-bold font" color="primary" x-large block dark>회원가입</v-btn>
                       <v-card-actions class="text--secondary white--text">
                         <v-spacer></v-spacer>
-                        <h6 class="mt-2 white--text">이미 가입하셨나요?</h6>
-                        <router-link class="pl-2" style="color: #FFFFFF" :to="{ name: 'Login' }">로그인</router-link>
+                        <h6 class="mt-2 white--text font">이미 가입하셨나요?</h6>
+                        <router-link class="pl-2 font" style="color: #FFFFFF" :to="{ name: 'Login' }">로그인</router-link>
                       </v-card-actions>
                     </v-form>
                   </v-card-text>

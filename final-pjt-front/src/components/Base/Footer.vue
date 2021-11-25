@@ -1,15 +1,8 @@
 <template>
   <v-footer dark padless>
     <v-card width="100%" flat tile class="primary white--text text-center">
-
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
-          <v-icon size="24px">{{icon}}</v-icon>
-        </v-btn>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-text class="white--text">
-        {{new Date().getFullYear()}}  - <strong>SSAFY-6</strong>
+      <v-card-text class="white--text font text-right pr-16">
+        <strong>Developer : 유동완, 이상훈</strong>
       </v-card-text>
     </v-card>
   </v-footer>
@@ -29,5 +22,10 @@ export default {
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
+  .font{
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
 </style>

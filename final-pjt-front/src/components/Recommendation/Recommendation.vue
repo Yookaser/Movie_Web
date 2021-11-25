@@ -2,7 +2,7 @@
     <v-container text-center class="mx-auto">
       <v-row justify="center" align="center" class="mt-15">
         <v-col v-show="!isclick" cols="12">
-          <v-btn color="primary" @click="getmovie">영화 추천받기</v-btn>
+          <v-btn color="primary" class="font" @click="getmovie">영화 추천받기</v-btn>
         </v-col>
 
         <v-col v-show="ismovie" cols="12" class="mt-15">
@@ -12,7 +12,7 @@
                 <figure>
                   <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
                   <figcaption>
-                    <v-btn :to="`/movie/${movie.id}`" text color="white">{{ movie.title }}</v-btn>
+                    <v-btn :to="`/movie/${movie.id}`" text color="white" class="font">{{ movie.title }}</v-btn>
                   </figcaption>
                 </figure>
               </slide>
@@ -60,6 +60,7 @@
 <script>
 import axios from 'axios'
 import {Carousel3d, Slide} from "vue-carousel-3d"
+import Swal from 'sweetalert2'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -107,8 +108,13 @@ export default {
     getmovie: function () {
       const headers = this.setToken()
       if (headers['Authorization'] === "Bearer null") {
-        alert('로그인이 필요한 기능입니다.')
-        return this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return 
       }
       axios({
         url: `${SERVER_URL}/ratings/recommend/${this.user_id}/`,
@@ -122,8 +128,15 @@ export default {
         setTimeout(this.stop, 3750)
       })
       .catch(() => {
-        alert('영화를 추천받기 위해서는 5개의 영화의 평점을 남겨주세요!')
-        return this.$router.push('/')
+        Swal.fire({
+          icon: 'warning',
+          text: '추천을 위해서는 5개의 영화의 평점을 남겨주세요!',
+          
+        })
+        .then(() => {
+          this.$router.push('/')
+          })
+        return 
       })
     },
   },

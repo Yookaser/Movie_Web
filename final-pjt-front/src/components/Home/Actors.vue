@@ -1,7 +1,7 @@
 <template>
   <div>
      <div>
-      <h2 class="mt-2 grey--text">출연진</h2>
+      <h2 class="mt-2 grey--text font">출연진</h2>
       <div class="scroll">
         <div v-for="(actor, index) in actors" :key="index">
           <v-hover v-slot="{hover}" open-delay="200">
@@ -9,7 +9,7 @@
               <router-link :to="`/actor/${actor.id}`">
                 <v-img :src="actorProfileImage(actor)" alt="Actor Image" class="rounded-lg"/>
               </router-link>
-              <v-card-title class="subtitle-2">{{ actor.name }}</v-card-title>
+              <v-card-title class="font-h3">{{ actor.name }}</v-card-title>
             </v-card>
           </v-hover>
         </div>

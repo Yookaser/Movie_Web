@@ -6,14 +6,14 @@
           <figure>
             <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
             <figcaption>
-              <v-btn :to="`/movie/${movie.movie}`" text color="white">{{ movie.title }}</v-btn>
+              <v-btn :to="`/movie/${movie.movie}`" text color="white" class="font">{{ movie.title }}</v-btn>
             </figcaption>
           </figure>
         </slide>
       </carousel-3d>
     </div>
     <div v-else class="mt-16 text-center">
-      <h1 class="vibrate">아직 영화를 카트에 담지 않았어요!</h1>
+      <h1 class="font vibrate">아직 영화를 카트에 담지 않았어요!</h1>
     </div>
   </div>
 </template>

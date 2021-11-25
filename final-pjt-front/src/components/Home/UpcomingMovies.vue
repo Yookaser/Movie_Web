@@ -1,6 +1,6 @@
 <template>
   <div id="example">
-    <h2 class="mx-3 grey--text">개봉 예정 영화</h2>
+    <h2 class="mx-3 grey--text font">개봉 예정 영화</h2>
     <carousel-3d
       :contols-visible="true"
       :clickable="false"
@@ -12,7 +12,7 @@
       <figure>
         <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" />
         <figcaption>
-          <v-btn :to="`/movie/${movie.id}`" text color="white">{{ movie.title }}</v-btn>
+          <v-btn :to="`/movie/${movie.id}`" text color="white" class="font">{{ movie.title }}</v-btn>
         </figcaption>
       </figure>
     </slide>

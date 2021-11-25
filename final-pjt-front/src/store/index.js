@@ -6,7 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     LoadingStatus: false,
-
     isLoggedIn: false,
     username: ''
   },
@@ -15,14 +14,16 @@ export default new Vuex.Store({
       state.LoadingStatus = true;
     },
     endSpinner (state) {
-        state.LoadingStatus = false;
+      state.LoadingStatus = false;
     },
 
-    LOGIN: function (state) {
+    LOGIN: function (state, username) {
       state.isLoggedIn = true
+      state.username = username
     },
     LOGOUT: function (state) {
       state.isLoggedIn = false
+      state.username = ''
     },
   },
   actions: {

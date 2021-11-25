@@ -17,7 +17,7 @@
             class="pa-0 rounded-lg"
           />
         </router-link>
-        <v-card-title class="subtitle-2">{{ actor.name }}</v-card-title>
+        <v-card-title class="font">{{ actor.name }}</v-card-title>
       </v-card>
     </v-hover>
   </div>

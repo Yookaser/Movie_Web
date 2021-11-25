@@ -8,12 +8,12 @@
       </v-row>
       
       <v-card-text class="mt-4"> 
-        <span class="text-h4"> {{additional.nickname}} </span>
+        <span class="font-h1"> {{additional.nickname}} </span>
         <v-divider></v-divider>
-        <div class="text-h5 text-start">
+        <div class="font-h2 text-start">
           <v-icon left color="red">fas fa-birthday-cake</v-icon> {{additional.birth_date}}
         </div>
-        <div class="mt-4 text-h7 text-start">
+        <div class="mt-4 font-h3 text-start">
          {{additional.context}}
         </div>
       </v-card-text> 
@@ -32,6 +32,7 @@
               v-on="on"
               elevation="5"
               @click="check"
+              class="font"
             >수정
             </v-btn>
             <v-btn
@@ -40,6 +41,7 @@
               v-bind="attrs"
               v-on="on"
               elevation="5"
+              class="font"
             >생성
             </v-btn>
           </template>
@@ -108,9 +110,9 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="isadditional" color="primary" @click="additionalChange(information, 1)">확인</v-btn>
-              <v-btn v-else color="primary"  @click="additionalChange(information, 0)">확인</v-btn>
-              <v-btn color="error"  @click="dialog = false">취소</v-btn>
+              <v-btn v-if="isadditional" class="font" color="primary" @click="additionalChange(information, 1)">확인</v-btn>
+              <v-btn v-else color="primary"  class="font" @click="additionalChange(information, 0)">확인</v-btn>
+              <v-btn color="error"  class="font" @click="dialog = false">취소</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -121,6 +123,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -159,13 +162,25 @@ export default {
     additionalChange: function (information, flag) {
       const headers = this.setToken()
       if (!information.nickname) {
-        return alert('닉네임을 작성해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '닉네임을 작성해주세요.',
+        })
+        return 
       }
       if (!information.birth_date) {
-        return alert('생일을 입력해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '생일을 입력해주세요.',
+        })
+        return 
       }
       if (!information.context) {
-        return alert('소개글을 작성해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '소개글을 작성해주세요.',
+        })
+        return 
       }
 
       if (flag) {

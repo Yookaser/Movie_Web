@@ -50,7 +50,7 @@ def movie_rating_check(request, movie_pk, user_pk):
 def movie_recommend(request, user_pk):
     reviews = MovieRating.objects.filter(user=user_pk).order_by('-rank')
 
-    if len(reviews) > 5:
+    if len(reviews) >= 5:
         reviews = reviews[:5]
 
         watched = set()

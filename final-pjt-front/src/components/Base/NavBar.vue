@@ -3,11 +3,11 @@
     <v-app-bar app color="primary" dark>
 
       <v-icon class="mr-2">fab fa-waze</v-icon>  <!-- 수정: 우리 로고 넣기 -->
-      <v-toolbar-title>WIIW</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
-      <v-btn text class="ml-2" to="/">영화</v-btn>
-      <v-btn text class="ml-2" to="/actor-list">배우</v-btn>
-      <v-btn text class="ml-2" to="/community-home/1">커뮤니티</v-btn>
-      <v-btn text class="ml-2" to="/recommendation">추천</v-btn>
+      <v-toolbar-title class="font">WIIW</v-toolbar-title>  <!-- 수정: 우리 서비스명 넣기 -->
+      <v-btn text class="ml-2 font" to="/">영화</v-btn>
+      <v-btn text class="ml-2 font" to="/actor-list">배우</v-btn>
+      <v-btn text class="ml-2 font" to="/community-home/1">커뮤니티</v-btn>
+      <v-btn text class="ml-2 font" to="/recommendation">추천</v-btn>
       <theme-toggle class="ml-2" />
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -32,8 +32,8 @@
         </v-autocomplete>
       </div>
       <div v-if="!isLoggedIn">
-        <v-btn text class="ml-2" :to="{ name: 'Signup' }">Signup</v-btn>
-        <v-btn text class="ml-2" :to="{ name: 'Login' }">Login</v-btn>
+        <v-btn text class="ml-2 font" :to="{ name: 'Signup' }">Signup</v-btn>
+        <v-btn text class="ml-2 font" :to="{ name: 'Login' }">Login</v-btn>
       </div>
 
       <div v-else>
@@ -41,11 +41,11 @@
         <router-link :to="`/profile/${username}`">
           <v-badge>
             <v-avatar size="50">
-              <v-img src="https://images.dog.ceo/breeds/pitbull/IMG_20190826_121528_876.jpg"></v-img>  <!-- 수정: 유저의 프로필 이미지 넣기 -->
+              <v-img src="https://images.dog.ceo/breeds/pitbull/IMG_20190826_121528_876.jpg"></v-img>
             </v-avatar>
           </v-badge>
         </router-link>
-        <v-btn text @click="logout" class="ml-2" to="#">Logout</v-btn>
+        <v-btn text @click.native="logout" class="ml-2 font" to="#">Logout</v-btn>
       </div>
 
     </v-app-bar>
@@ -94,5 +94,46 @@ export default {
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
+  .font{
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h1{
+    font-size: 2em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h2{
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h3{
+    font-size: 1.17em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h4{
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h5{
+    font-size: .83em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+
+  .font-h6{
+    font-size: .67em;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
 </style>

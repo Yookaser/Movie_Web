@@ -10,16 +10,16 @@
         </v-col>
 
         <v-col cols="12" sm="7">
-          <h1 class="font-weight-bold mt-5">{{ this.movie.title }}</h1>
+          <h1 class="grey--text font-weight-bold mt-5 font">{{ this.movie.title }}</h1>
           <v-row>
             <v-col cols="12" sm="3">
               <v-rating :value="movie.vote_average / 2" color="amber" dense half-increments readonly size="25"></v-rating>
             </v-col>
             <v-col cols="12" sm="4">
-              <div class="font-weight-bold">인기도: {{ movie.vote_average * 10 }}% | 개봉일: {{ movie.release_date }}</div>
+              <div class="grey--text font-weight-bold font">평점: {{ movie.vote_average * 10 }}% | 개봉일: {{ movie.release_date }}</div>
             </v-col>
             <v-col cols="12" sm="5">
-              <div class="font-weight-bold">장르:
+              <div class="grey--text font-weight-bold font">장르:
                 <span v-for="(item, index) in movie.genres" :key="index" class="ml-1">{{ item.name }}
                   <span v-if="(movie.genres.length - 1 != index)">,</span>
                 </span>
@@ -28,14 +28,14 @@
           </v-row>
           
           <v-col cols="12">
-            <p class="mt-5 text--darken-3 subheader">{{ movie.overview }}</p>
+            <p class="mt-5 grey--text subheader font-h3">{{ movie.overview }}</p>
           </v-col>
           <v-col cols="12">
-            <h2 class="text--darken-3">제작진</h2>
+            <h2 class="grey--text font">제작진</h2>
             <div v-for="(crew, index) in movie.credits.crew" :key="index" class="mt-3 ml-5">
               <div v-if="index < 2" class="">
-                <h3>{{ crew.name }}</h3>
-                <span>{{ crew.job }}</span>
+                <h3 class="grey--text font">{{ crew.name }}</h3>
+                <span class="grey--text font">{{ crew.job }}</span>
               </div>
             </div>
           </v-col>
@@ -44,14 +44,14 @@
             <v-col cols="12" sm="1" class="ml-6">
               <v-dialog v-model="dialog1" persistent width="65%">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn tile color="error" v-bind="attrs" v-on="on" @click.prevent="openYouTubeModel">
+                  <v-btn tile color="error" v-bind="attrs" v-on="on" @click.prevent="openYouTubeModel" class="font">
                     <v-icon left>far fa-play-circle</v-icon>예고편
                   </v-btn>
                 </template>
 
                 <v-card>
                   <v-card-title>
-                    <span class="headline">{{ movie.title }}</span>
+                    <span class="font-h2">{{ movie.title }}</span>
                   </v-card-title>
 
                   <v-card-text>
@@ -62,7 +62,7 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="error" text @click="dialog1=false" >Close</v-btn>
+                    <v-btn color="error" class="font" @click="dialog1=false">Close</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -70,30 +70,30 @@
 
             <v-col cols="12" sm="1" class="ml-6">
 
-              <v-btn v-if="isincart" tile color="error" class="ml-2 like" @click="myCart">
-                <v-icon left>fas fa-heart</v-icon>취소요
+              <v-btn v-if="isincart" tile color="error" class="ml-2 font" @click="myCart">
+                <v-icon left>fas fa-heart</v-icon>싫어요
               </v-btn>
-              <v-btn v-else tile color="error" class="ml-2" @click="myCart">
+              <v-btn v-else tile color="error" class="ml-2 font" @click="myCart">
                 <v-icon left>far fa-heart</v-icon>좋아요
               </v-btn>
             </v-col>
 
             <v-col cols="12" sm="1" class="ml-8">
-              <v-btn tile color="error" class="ml-2" @click="islogin($route.params.id)">
+              <v-btn tile color="error" class="ml-2 font" @click="islogin($route.params.id)">
                 <v-icon left>fas fa-plus</v-icon>리뷰 쓰기
               </v-btn>
             </v-col>
 
             <v-col cols="12" sm="1" class="ml-14">
-              <v-btn tile color="error" class="ml-2" dark @click.stop="dialog2 = true">
+              <v-btn tile color="error" class="ml-2 font" dark @click.stop="dialog2 = true">
                 <v-icon left>fas fa-star</v-icon>한줄평
               </v-btn>
 
               <v-dialog v-model="dialog2">
-                <v-card min-width="500px">
-                  <v-card-title class="text-h5">{{ movie.title }}</v-card-title>
+                <v-card class="pl-5 pt-5" min-width="500px">
+                 <p class="font-h2">{{ movie.title }}</p>
 
-                  <v-card-text>
+                  <v-card-text class="pl-0">
                     <v-text-field v-model.trim="rating.content" label="content" name="content" type="text" outlined></v-text-field>
                       <div class="text-center">
                         <v-rating v-model="rating.rank" color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments hover large></v-rating>
@@ -102,7 +102,7 @@
                   
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="addRating()">등록</v-btn>
+                    <v-btn color="green darken-1" text @click="addRating()" class="font">등록</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -140,6 +140,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import Actors from '@/components/Home/Actors'
 import Images from '@/components/Home/Images'
 import ReviewList from '@/components/Home/ReviewList'
@@ -224,8 +225,13 @@ export default {
       if(token) {
         this.$router.push({ name: 'ReviewCreate', params: { category: 'movie', id: movie_pk }})
       } else {
-        alert('리뷰를 쓰기 위해서는 로그인이 필요합니다.')
-        this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return 
       }
     },
 
@@ -272,7 +278,7 @@ export default {
         headers,
       })
       .then((res) => {
-        if (res.data.indexOf(this.user_id) >= 0) {
+        if (res.data.find(el => el.movie == this.$route.params.id)) {
           this.isincart = true
         }
       })
@@ -284,8 +290,13 @@ export default {
     myCart: function () {
       const headers = this.setToken()
       if (headers['Authorization'] === "Bearer null") {
-        alert('로그인이 필요한 기능입니다.')
-        return this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return
       }
       axios({
         url: `${SERVER_URL}/accounts/movies/`,
@@ -310,10 +321,18 @@ export default {
     addRating: function () {
       const headers = this.setToken()
       if (!this.rating.content) {
-        return alert('내용을 작성해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '내용을 작성해주세요.',
+        })
+        return 
       }
       if (!this.rating.rank) {
-        return alert('평점을 입력해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '평점을 입력해주세요.',
+        })
+        return 
       }
       if (this.israting) {
         axios({

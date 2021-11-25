@@ -90,12 +90,12 @@ body, html{
 	height: 100%;
 	padding: 0;
 	margin: 0;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Gowun Dodum', sans-serif;
 }
 h1{
-	font-weight: normal;
+	font-weight: bold;
 	font-size: 3em;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Gowun Dodum', sans-serif;
 	margin: 0 auto;
 	padding-top: 20px;
 	width: 500px;
@@ -162,7 +162,8 @@ input, textarea{
 	border-radius: 20px;
 	outline: none;
 	padding: 10px;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Gowun Dodum', sans-serif;
+	font-weight: bold;
 	font-size: 1em;
 	color: #676767;
 	transition: border 0.5s;
@@ -192,7 +193,8 @@ input[type="submit"]{
 	margin-top: 30px;
 	margin-bottom: 15px;
 	font-size: 1.29em;
-	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+	font-family: 'Gowun Dodum', sans-serif;
 	-webkit-transition: background-color 0.5s;
 	-moz-transition: background-color 0.5s;
 	-o-transition: background-color 0.5s;
@@ -203,6 +205,8 @@ input[type="submit"]:hover{
 	
 }
 label{
+	font-weight: bold;
+  font-family: 'Gowun Dodum', sans-serif;
 	font-size: 1.5em;
 	margin-top: 20px;
 	padding-left: 20px;
@@ -229,7 +233,8 @@ input[type="button"]{
 	cursor: pointer;
 	margin-bottom: 20px;
 	font-size: 1.29em;
-	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+  font-family: 'Gowun Dodum', sans-serif;
 	-webkit-transition: background-color 0.5s;
 	-moz-transition: background-color 0.5s;
 	-o-transition: background-color 0.5s;

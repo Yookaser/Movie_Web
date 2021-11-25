@@ -30,22 +30,26 @@
         </v-col>
 
         <v-col cols="12" sm="7">
-          <h1 class="grey--text text--darken-3 mt-5">{{actor.name}}</h1>
+          <h1 class="grey--text text--darken-3 font-weight-bold mt-5 font">{{actor.name}}</h1>
           <v-row>
             <v-col cols="12" sm="3">
               <v-btn text>
                 <v-icon color="error">fas fa-birthday-cake</v-icon>
               </v-btn>
-              <span class="grey--text">{{ actor.birthday }}  ({{ getAge(actor.birthday) }})</span>
+              <span class="grey--text font">
+                <span>{{ actor.birthday }}  ({{ getAge(actor.birthday) }})</span>
+                <span v-if="actor.gender==2"> (남)</span>
+                <span v-else> (여)</span>
+              </span>
             </v-col>
             <v-col cols="12" sm="3">
-              <v-btn tile color="error" class="ml-2" @click="islogin($route.params.id)">
+              <v-btn tile color="error" class="ml-2 font" @click="islogin($route.params.id)">
                 <v-icon left>fas fa-plus</v-icon>리뷰 쓰기
               </v-btn>
             </v-col>
           </v-row>
 
-          <p class="mt-5 grey--text text-darken-3 subheader">{{actor.biography}}</p>
+          <p class="mt-5 grey--text text-darken-3 subheader font">{{actor.biography}}</p>
           <div class="scroll">
             <v-col cols="12" sm="2" :key="movie.id" v-for="movie in this.knownFor" class="pa-0 mr-3">
               <v-hover v-slot="{ hover }" open-delay="200">
@@ -53,8 +57,8 @@
                   <router-link :to="`/movie/${movie.id}`">
                     <v-img max-height="241px" class="rounded-lg" alt="Movie Image" :src="movieImage(movie)"/>
                   </router-link>
-                    <v-card-title v-if="movie.title.length > 10" class="subtitle-2 rounded-lg">{{ movie.title.slice(0, 10) }}...</v-card-title>
-                    <v-card-title v-else class="subtitle-2 rounded-lg">{{ movie.title }}</v-card-title>
+                    <v-card-title v-if="movie.title.length > 8" class="rounded-lg font">{{ movie.title.slice(0, 8) }}...</v-card-title>
+                    <v-card-title v-else class="rounded-lg font">{{ movie.title }}</v-card-title>
                 </v-card>
               </v-hover>
             </v-col>
@@ -69,11 +73,11 @@
 
           <v-divider class="my-6"></v-divider>
 
-          <h2 class="mt-2 grey--text">크레딧</h2>
+          <h2 class="mt-2 grey--text font">크레딧</h2>
           <ul class="pl-5 mt-8">
-            <li v-for="cast in castMovies" :key="cast.id">
-              <strong>{{ castDetails(cast) }}</strong>
-              <v-btn text :to="`/movie/${cast.id}`">
+            <li class="font grey--text" v-for="cast in castMovies" :key="cast.id">
+              <strong> {{ castDetails(cast) }} </strong>
+              <v-btn  class="font grey--text" text :to="`/movie/${cast.id}`">
                 {{ cast.title }}
               </v-btn>
               as {{ cast.character }}
@@ -87,6 +91,7 @@
 
 <script>
 import ReviewList from '@/components/Home/ReviewList'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -154,15 +159,24 @@ export default {
       if(token) {
         this.$router.push({ name: 'ReviewCreate', params: { category: 'actor', id: actor_pk }})
       } else {
-        alert('리뷰를 쓰기 위해서는 로그인이 필요합니다.')
-        this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return 
       }     
     },
     gosocial: function(base_url, socail_url, actor, social) {
       if (socail_url) {
         window.open(base_url+socail_url, "_blank")
       } else {
-        alert(`${actor}님의 ${social} 페이지가 존재하지 않습니다.`)
+        Swal.fire({
+          icon: 'warning',
+          text: `${actor}님의 ${social} 페이지가 존재하지 않습니다.`,
+        })
+        return 
       }
     }
   }

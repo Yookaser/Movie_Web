@@ -1,23 +1,23 @@
 <template>
   <div class="detail-container">
     <v-card class="mx-auto mt-10 mb-10 p-5" width="65%" height="65%" elevation="0">
-      <v-card-title class="text-h5">제목: {{ review.title }}</v-card-title>
+      <v-card-title class="font-h1">제목: {{ review.title }}</v-card-title>
       <v-card-subtitle class="justify-space-around grey--text font-weight-light">
         <v-row>
-          <v-col cols="2">
-            <v-card-text class="text-h6" cols="4">작성자: {{ review.reviewusername }}</v-card-text>
+          <v-col cols="4">
+            <v-card-text class="font-h3" cols="4">작성자: {{ review.reviewusername }}</v-card-text>
           </v-col>
           <v-col cols="4">
-            <v-card-text class="text-h7" cols="4">작성 일시: {{ review.created_at }}</v-card-text>
+            <v-card-text class="font-h3" cols="4">작성 일시: {{ review.created_at.slice(0,10) }} {{ review.created_at.slice(11,19) }}</v-card-text>
           </v-col>
           <v-col cols="4">
-            <v-card-text class="text-h7" cols="4">수정 일시: {{ review.updated_at }}</v-card-text>
+            <v-card-text class="font-h3" cols="4">수정 일시: {{ review.updated_at.slice(0,10) }} {{ review.updated_at.slice(11,19) }}</v-card-text>
           </v-col>
         </v-row>
       </v-card-subtitle>
       <v-divider class="mt-2"></v-divider>
 
-      <v-card-text class="text-h5">
+      <v-card-text class="font-h2">
         {{ review.content }}
       </v-card-text>
     
@@ -42,17 +42,17 @@
       <v-divider class="mt-2"></v-divider>
 
       <v-row>
-        <v-col cols="10">
-          <v-card-text class="text-h6">댓글 {{ review.comment_count }}개</v-card-text>
+        <v-col cols="9">
+          <v-card-text class="font-h3">댓글 {{ review.comment_count }}개</v-card-text>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="3">
           <v-card-actions outlined v-if="review.user === user_id" class="justify-center">
             <router-link :to="{ name: 'ReviewUpdate', params: { category: $route.params.category, category_id: $route.params.category_id, id: $route.params.id, review: review }}">
-              <v-btn class="mr-2" color="primary" elevation="5">수정</v-btn>
+              <v-btn class="mr-2 font" color="primary" elevation="5">수정</v-btn>
             </router-link>
-            <v-btn class="ml-2" color="error" elevation="5" @click="deleteReview">삭제</v-btn>
+            <v-btn class="ml-2 mr-2 font" color="error" elevation="5" @click="deleteReview">삭제</v-btn>
+            <v-btn class="ml-2" color="#a0a0a0" @click="back($route.params.category, $route.params.category_id)">목록</v-btn>
           </v-card-actions>
-          <!-- <v-btn @click="back($route.params.category, $route.params.category_id)">목록</v-btn> -->
         </v-col>
       </v-row>
 
@@ -70,7 +70,7 @@
           </v-col>
           <v-col cols="1" class="pl-0">
             <div class="text-right">
-              <v-btn @click="createcomment(information)" class="my-1" x-large color="primary" elevation="5">제출</v-btn>
+              <v-btn @click="createcomment(information)" class="my-1 font" x-large color="primary" elevation="5">제출</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -81,6 +81,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import ReviewDetailComment from '@/components/Home/ReviewDetailComment'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -136,8 +137,13 @@ export default {
     isLike: function (flag) {
       const headers = this.setToken()
       if (headers['Authorization'] === "Bearer null") {
-        alert('로그인이 필요한 기능입니다.')
-        return this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return 
       }
       axios({
         url: `${SERVER_URL}/community/reviews/${this.$route.params.category}/${this.$route.params.id}/${flag}/`,
@@ -182,11 +188,20 @@ export default {
       const headers = this.setToken()
 
       if (headers['Authorization'] === "Bearer null") {
-        alert('로그인이 필요한 기능입니다.')
-        return this.$router.push('/login')
+        Swal.fire({
+          icon: 'warning',
+          text: '로그인이 필요합니다!',
+        }).then(() => {
+          this.$router.push('/login')
+        })
+        return 
       }
       if (!information.content) {
-        return alert('댓글 내용을 작성해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          text: '댓글 내용을 작성해주세요.',
+        })
+        return 
       }
       axios({
         url: `${SERVER_URL}/community/reviews/${this.$route.params.category}/${this.$route.params.id}/comment/`,
@@ -233,13 +248,13 @@ export default {
       })
     },
 
-    // back: function (category, id) {
-    //   if (category == 'actor') {
-    //     this.$router.push({ name: 'ActorDetail', params: { id }})
-    //   } else {
-    //     this.$router.push({ name: 'MovieDetail', params: { id }})
-    //   }
-    // }
+    back: function (category, id) {
+      if (category == 'actor') {
+        this.$router.push({ name: 'ActorDetail', params: { id }})
+      } else {
+        this.$router.push({ name: 'MovieDetail', params: { id }})
+      }
+    }
   },
 
   created: function () {

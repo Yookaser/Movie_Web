@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mt-2 grey--text">리뷰</h2>
+    <h2 class="mt-2 grey--text font">리뷰</h2>
     <v-card elevation="0">
       <v-card-title>
         <v-spacer></v-spacer>
@@ -18,15 +18,15 @@
         :items="desserts"
         item-key="pk"
         :search="search"
-        class="my-border"
+        class="my-border font grey--text"
       >
         <template v-slot:item="{ item }">
           <tr @click="goDetail(item.pk)">
-            <td>{{ item.username }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.like_users.length }}</td>
-            <td>{{ item.dislike_users.length }}</td>
+            <td class="font">{{ item.username }}</td>
+            <td class="font">{{ item.title }}</td>
+            <td class="font">{{ item.created_at.slice(0,10) }} {{ item.created_at.slice(11,19) }}</td>
+            <td class="font">{{ item.like_users.length }}</td>
+            <td class="font">{{ item.dislike_users.length }}</td>
           </tr>
         </template>
 
